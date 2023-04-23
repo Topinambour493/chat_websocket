@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="style/style.css" type="text/css">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script defer src="js/socket.js"></script>
+    <script defer src="js/socket_rooms.js"></script>
+  </head>
+  <body>
+      <button id="create">create new room</button>
+      <form action="">
+          <input id="room" type="text" oninput="this.value = this.value.toUpperCase()">
+          <button type="submit" id="join">join room existant</button>
+      </form>
+  </body>
+</html>
