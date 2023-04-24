@@ -9,3 +9,10 @@ body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSyst
 #messages > li { padding: 0.5rem 1rem; }
 #messages > li:nth-child(odd) { background: #efefef; }
 #messages > li:nth-child(even) { background: #eb8989; }
+
+fieldset {
+    width:fit-content;
+}
+
+  
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="style/style.css" type="text/css">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script defer src="js/socket.js"></script>
+    <script defer src="js/socket_rooms.js"></script>
+  </head>
+  <body>
+    <div>
+      <label name="username">Choose username:</label>
+      <input id="username" type="text" oninput="localStorage.setItem('username', this.value);">
+    <div>
+    <div>
+      <button type="submit" id="join_public">join public room </button>
+    </div>
+    <button id="create_private">create private room</button>
+    <form>
+      <input id="room" type="text" oninput="this.value = this.value.toUpperCase()">
+      <button type="submit" id="join_private">join private room</button>
+    </form>
+  </body>
+</html>
