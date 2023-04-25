@@ -18,7 +18,7 @@ app.get('/:roomId', (req, res) => {
   roomId = req.params.roomId;
   if (Object.keys(rooms).includes(roomId)){
     if (rooms[roomId]["users"].length < 2){
-      res.sendFile(__dirname + '/views/chat.html');
+      res.sendFile(__dirname + '/views/quarto.html');
     } else {
       res.sendFile(__dirname + '/views/full.html');
     }
@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
     do{
       var newRoom = createNewRoom(4);
     } while (Object.keys(rooms).includes(newRoom));
-    rooms[newRoom] = {"users":[],"type":"private"}; 
+    rooms[newRoom] = {"users":[],"type":"private", "mode":"oui"}; 
     console.log(newRoom, " created");
     callback({
       nameRoom: newRoom
@@ -91,10 +91,12 @@ io.on("connection", (socket) => {
     rooms[room]["users"].push(socket.id)
   })
 
-  socket.on("join public room", (callback) => {
+  socket.on("join public room", (mode, callback) => {
     console.log(rooms);
     for (let [room, value] of Object.entries(rooms)) {
-      if (rooms[room]["users"].length == 1 && rooms[room]["type"] == 'public'){
+      if (rooms[room]["users"].length == 1 && 
+          rooms[room]["type"] == 'public' && 
+          rooms[room]["mode"] == mode ){
         callback({
           nameRoom: room
         });
@@ -103,7 +105,7 @@ io.on("connection", (socket) => {
     do{
       var newRoom = createNewRoom(4);
     } while (Object.keys(rooms).includes(newRoom));
-    rooms[newRoom] = {"users":[],"type":"public"}; 
+    rooms[newRoom] = {"users":[],"type":"public", "mode": mode}; 
     callback({
       nameRoom: newRoom
     });

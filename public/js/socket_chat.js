@@ -12,9 +12,8 @@ var room = window.location.pathname.substring(1)
 
 
 socket.emit("init chat", room, (response) => {
-  if (response.status == "first"){
-    document.getElementById("loader").style.display = "block";
-  } else if (response.status == "second"){
+  if (response.status == "second"){
+    document.getElementById("loader").style.display = "none";
     socket.emit("start game", room);
   }
 });
@@ -24,23 +23,7 @@ socket.on('start game', function(){
   message.innerHTML="oupi";
 });
 
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  if (input.value) {
-    var room = window.location.pathname.substring(1)
-    var username = localStorage.getItem('username')
-    socket.emit('chat message', room, username, input.value);
-    input.value = '';
-  }
-});
 
-socket.on('chat message', function(username, msg) {
-  var item = document.createElement('li');
-  item.textContent = username  + " " +  msg;
-
-  messages.appendChild(item);
-  window.scrollTo(0, document.body.scrollHeight);
-});
 
 
 

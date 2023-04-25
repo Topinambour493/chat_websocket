@@ -1,22 +1,29 @@
 var createPrivate = document.getElementById('create_private');
 var joinPublic = document.getElementById('join_public');
+var joinPrivate = document.getElementById('join_private');
 var inputNameRoom = document.getElementById('room');
 var inputUsername = document.getElementById('username');
-var joinPrivate = document.getElementById('join_private');
 
 inputUsername.value = localStorage.getItem('username') ? localStorage.getItem('username') : "me";
 
+function getMode(){
+  mode =  document.querySelector('input[name="mode"]:checked').value;
+  return mode;
+}
+
 joinPublic.addEventListener('click', function(e) {
   e.preventDefault();
-  socket.emit('join public room', (response) => {
+  mode = getMode();
+  socket.emit('join public room', mode, ( response) => {
       window.location.pathname = response.nameRoom;
   });
 });
 
 createPrivate.addEventListener('click', function(e) {
   e.preventDefault();
+  mode = getMode();
   console.log("ouiuo");
-  socket.emit('create private room', (response) => {
+  socket.emit('create private room', ( response) => {
       window.location.pathname = response.nameRoom;
   });
 });
