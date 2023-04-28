@@ -38,17 +38,19 @@ function createNewRoom(length){
 }
 
 async function disconnect(user_id){
-  console.log(rooms);
   for (let [room, value] of Object.entries(rooms)) {
-    var index = rooms[room]["users"].indexOf(user_id)
-    if (index > -1){
-      rooms[room]["users"].splice(index, 1);
+    if (rooms[room]["users"][0] == user_id){
+      rooms[room]["users"].splice(0, 1);
+      if (rooms[room]["users"].length == 0){
+        delete rooms[room];
+      }
+    } else if ((rooms[room]["users"][1] == user_id)){
+      rooms[room]["users"].splice(1, 1);
       if (rooms[room]["users"].length == 0){
         delete rooms[room];
       }
     }
   }
-  console.log(rooms);
 }
 
 io.on("connection", (socket) => {
@@ -59,11 +61,11 @@ io.on("connection", (socket) => {
     disconnect(socket.id)
   });
 
-  socket.on('create private room', (callback) => {
+  socket.on('create private room', ( mode, callback) => {
     do{
       var newRoom = createNewRoom(4);
     } while (Object.keys(rooms).includes(newRoom));
-    rooms[newRoom] = {"users":[],"type":"private", "mode":"oui"}; 
+    rooms[newRoom] = {"users":[],"type":"private", "mode":mode, name: newRoom}; 
     console.log(newRoom, " created");
     callback({
       nameRoom: newRoom
@@ -82,17 +84,12 @@ io.on("connection", (socket) => {
     };
   }); 
 
-  socket.on("deplace room", (room) => {
+  socket.on("deplace room", (room, nickname) => {
     socket.join(room)
-    if (Object.keys(rooms).includes(room) == false){
-      rooms[room] = {"users":[],"type":"private"};
-    }
-    console.log(rooms)
-    rooms[room]["users"].push(socket.id)
+    rooms[room]["users"].push([socket.id, nickname]);
   })
 
   socket.on("join public room", (mode, callback) => {
-    console.log(rooms);
     for (let [room, value] of Object.entries(rooms)) {
       if (rooms[room]["users"].length == 1 && 
           rooms[room]["type"] == 'public' && 
@@ -105,14 +102,13 @@ io.on("connection", (socket) => {
     do{
       var newRoom = createNewRoom(4);
     } while (Object.keys(rooms).includes(newRoom));
-    rooms[newRoom] = {"users":[],"type":"public", "mode": mode}; 
+    rooms[newRoom] = {"users":[],"type":"public", "mode": mode, name: newRoom}; 
     callback({
       nameRoom: newRoom
     });
   });
   
-  socket.on('init chat',(room, callback) => {
-    if (rooms[room]["users"].length == 1){
+  socket.on('init game',(room, callback) => {    if (rooms[room]["users"].length == 1){
       callback({
         status: "first"
       })
@@ -124,13 +120,38 @@ io.on("connection", (socket) => {
   });
 
   socket.on('start game', (room) => {
-    io.to(room).emit('start game');
-  });
-  
-  socket.on('chat message', (room, username, msg) => {
-    io.to(room).emit('chat message',username, msg);   
+    roomDict = rooms[room]
+    players = [
+      {
+        "color": "red",
+        "nickname": roomDict["users"][0][1]
+      },
+      {
+        "color": "blue",
+        "nickname": roomDict["users"][1][1]
+      }
+    ]
+    console.log(room);
+    first_player = players[Math.floor(Math.random() * 2)];
+    io.to(room).emit('start game', roomDict, first_player);
   });
 
+
+
+  socket.on("choose piece", (room, piece_id, players) => {
+    console.log(piece_id, "choose")
+    io.to(room["name"]).emit("choose piece", room, piece_id, players);
+  });
+  
+
+  socket.on("place piece", (room, locationPiece, piece_id, players) => {
+    console.log(piece_id, "place")
+    io.to(room["name"]).emit("place piece", room, locationPiece, piece_id, players);
+  });
+
+  socket.on("end game", (room, message) => {
+    io.to(room["name"]).emit("end game", room, message);
+  })
 });
 
 server.listen(3000, () => {

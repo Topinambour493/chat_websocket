@@ -23,46 +23,21 @@ document.querySelector('body').addEventListener(('click'),function(){
     document.querySelector("#règles_jeu").style.display="none";
 });
 
-document.querySelector('#couleurJ1').addEventListener(('change'),function(){
-    joueur1["couleur"]=document.querySelector('#couleurJ1').value;
-    document.querySelector("#pseudoJ1").style.color=`${joueur1["couleur"]}`;
-});
 
-document.querySelector('#couleurJ2').addEventListener(('change'),function(){
-    joueur2["couleur"]=document.querySelector('#couleurJ2').value;
-    document.querySelector("#pseudoJ2").style.color=`${joueur2["couleur"]}`;
-});
-
-
-function animation(){
-    for (let piece=0;piece<16;piece++){
-        document.querySelector(`#p${piece}`).addEventListener('click',function(){
-            if ( ( !document.querySelector("header > .pion") ) && ( document.querySelector(`#pieces #p${piece}`) ) ){
-                document.querySelector("header").append(this.parentElement); 
-                this.className+=" cursor_default";
-                document.querySelector("#action").innerHTML="Place la pièce";
-                if (document.querySelector("#pseudo").innerHTML==joueur1["pseudo"]){
-                    document.querySelector("#pseudo").innerHTML=`${joueur2["pseudo"]}`;
-                    document.querySelector("#pseudo").style.color=`${joueur2["couleur"]}`;
-                } else {
-                    document.querySelector("#pseudo").innerHTML=`${joueur1["pseudo"]}`;
-                    document.querySelector("#pseudo").style.color=`${joueur1["couleur"]}`;
-                }
+function animation(room, players){
+    for (let locationPiece=0;locationPiece<16;locationPiece++){
+        document.querySelector(`#locP${locationPiece}`).addEventListener('click',function(){
+            if (document.querySelector("header > .pion") && getProperties_piece(locationPiece)==false){
+                console.log(locationPiece, this.id, "place makeinpiece")
+                socket.emit("place piece", room, locationPiece, this.id, players);
             }
         });
     }
 
-    for (let locationPiece=0;locationPiece<16;locationPiece++){
-        document.querySelector(`#locP${locationPiece}`).addEventListener('click',function(){
-            if (document.querySelector("header > .pion") && getProperties_piece(locationPiece)==false){
-                document.querySelector(`#locP${locationPiece}`).append(document.querySelector("header > .pion"));
-                document.querySelector(`#locP${locationPiece}`).className+=" cursor_default";
-                document.querySelector("#action").innerHTML="Choisis une pièce";
-                if ( isWin(locationPiece) ){
-                    endGame("QUARTO!");
-                } else if ( isEquality()){
-                    endGame("ÉGALITÉ!");
-                }
+    for (let piece=0;piece<16;piece++){
+        document.querySelector(`#p${piece}`).addEventListener('click',function(){
+            if ( ( !document.querySelector("header > .pion") ) && ( document.querySelector(`#pieces #p${piece}`) ) ){
+                socket.emit("choose piece", room,  this.id, players);
             }
         });
     }
@@ -78,6 +53,7 @@ function isEquality(){
 
 //affiche la fin de partie et le menu pour en commencer ue nouvelle
 function endGame(message){
+
     document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre">${message}</div>`;
     lockJeu();
     document.querySelector("#action").innerHTML=`\
@@ -224,21 +200,17 @@ function isWinLines(locP){
 }
 
 function isWin(locP){
-    if ( isWinLines(locP) ){return true;}
+    if ( isWinLines(locP) ){
+        return true;}
     if (mode=="expert"){
         if ( isWinSquares(locP) ){return true;}
     }
     return false;
 }
 
-function defineNameJoueurs(){
-    let pseudoJ1=document.querySelector('#pseudoJ1').value;
-    let pseudoJ2=document.querySelector('#pseudoJ2').value;
-
-    if (pseudoJ1 && pseudoJ1.trim()){
-        joueur1["pseudo"]=pseudoJ1;
-    } 
-    if (pseudoJ2 && pseudoJ2.trim()){
-        joueur2["pseudo"]=pseudoJ2;
-    } 
+function defineNameJoueurs(room){
+    console.log(room)
+    joueur1["pseudo"]=pseudoJ1=room["users"][0][1];
+    joueur2["pseudo"]=pseudoJ2=room["users"][1][1]; 
+    console.log(joueur2["pseudo"], joueur1["pseudo"])
 }

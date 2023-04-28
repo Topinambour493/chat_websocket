@@ -32,22 +32,13 @@ function rejouer(){
     jouer();
 }
 
-function jouer(){
+function creation_pieces(){
     var couleurs=["blanc","noir"];
     var formes=["carre","rond"];
     var tailles=["grand","petit"];
     var trous=["plein","trou"];
     var piece;
     var pieces=document.getElementById("pieces")
-
-    //remplissage du header
-    let premierJoueur=joueurs[Math.floor(Math.random() * 2)];
-    document.querySelector("#centre_header").innerHTML=`\
-        <div id="pseudo">${premierJoueur["pseudo"]}</div> \
-        <div id="action">Choisis une pièce</div> \
-    `;
-    document.querySelector("#pseudo").style.color=`${premierJoueur["couleur"]}`;
-    document.querySelector("#mode_jeu").innerHTML = `mode ${mode}`;
 
     //création des pièces
     piece=0;
@@ -69,8 +60,23 @@ function jouer(){
             });
         });
     });
+}
+
+function fill_header(mode, first_player){
+    document.querySelector("#centre_header").innerHTML=`\
+        <div id="pseudo">${first_player["nickname"]}</div> \
+        <div id="action">Choisis une pièce</div> \
+    `;
+    document.querySelector("#pseudo").style.color=`${first_player["color"]}`;
+    document.querySelector("#mode_jeu").innerHTML = `mode ${mode}`;
+}
+
+function jouer(){
+    creation_pieces();
+    fill_header(mode, first_player);
     unlockJeu();
     animation();
+    return premierJoueur["pseudo"]
 }
 
 

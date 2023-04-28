@@ -310,3 +310,6 @@ input[type="text"]{
 }
 
 
+#jeu {
+    pointer-events:none;
+}
