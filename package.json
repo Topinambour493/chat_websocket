@@ -1,11 +1,13 @@
 {
-  "name": "websockets1",
+  "name": "Quarto",
   "version": "1.0.0",
-  "description": "",
+  "description": "QUARTO! is a board game for 2 players invented by Blaise Müller. In this versio, players can compete locally or in multiplayern",
   "main": "index.js",
   "scripts": {
-    "start":"nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "prod": "node dist/final.js"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +16,10 @@
     "express": "^4.18.2",
     "nodemon": "^2.0.22",
     "socket.io": "^4.6.1"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^12.0.2",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
   }
 }
