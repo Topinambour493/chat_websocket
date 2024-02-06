@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>QUARTO!</title>
-    <link rel="stylesheet" href="style/loading.css" type="text/css">
-    <link rel="stylesheet" href="style/style_geometrie.css"/>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <%- include('../partials/head'); %>
     <script defer type="text/javascript" src="js/animation_jeu.js"></script>
     <script defer type="text/javascript" src="js/creation_elements_jeu.js"></script>
     <% if (type === "local") { %>
