@@ -1,15 +1,3 @@
-document.querySelector(`#mode_classique`).addEventListener('click',function(){
-    mode="classique";
-    defineNameJoueurs()
-    jouer();
-});
-
-document.querySelector(`#mode_expert`).addEventListener('click',function(){
-    mode="expert";
-    defineNameJoueurs()
-    jouer();
-});
-
 document.querySelector('#bouton_règles').addEventListener('click',function(e){
     document.querySelector("#règles_jeu").style.display="flex";
     e.stopPropagation();
@@ -23,53 +11,31 @@ document.querySelector('body').addEventListener(('click'),function(){
     document.querySelector("#règles_jeu").style.display="none";
 });
 
+// #### in local version ###
+document.querySelector('#couleurJ1').addEventListener(('change'),function(){
+    joueur1["couleur"]=document.querySelector('#couleurJ1').value;
+    document.querySelector("#nicknameJ1").style.color=`${joueur1["couleur"]}`;
+});
 
-function animation(room, players){
-    for (let locationPiece=0;locationPiece<16;locationPiece++){
-        document.querySelector(`#locP${locationPiece}`).addEventListener('click',function(){
-            if (document.querySelector("header > .pion") && getProperties_piece(locationPiece)==false){
-                console.log(locationPiece, this.id, "place makeinpiece")
-                socket.emit("place piece", room, locationPiece, this.id, players);
-            }
-        });
-    }
+document.querySelector('#couleurJ2').addEventListener(('change'),function(){
+    joueur2["couleur"]=document.querySelector('#couleurJ2').value;
+    document.querySelector("#nicknameJ2").style.color=`${joueur2["couleur"]}`;
+});
+// #### end in local version ###
 
-    for (let piece=0;piece<16;piece++){
-        document.querySelector(`#p${piece}`).addEventListener('click',function(){
-            if ( ( !document.querySelector("header > .pion") ) && ( document.querySelector(`#pieces #p${piece}`) ) ){
-                socket.emit("choose piece", room,  this.id, players);
-            }
-        });
-    }
-}
 
 function isEquality(){
-    if ( ( document.querySelector("#pieces").children[0].childElementCount == 0 ) 
-    && ( document.querySelector("#pieces").children[1].childElementCount == 0 ) ){
+    if ( ( document.querySelector("#pieces").children[0].childElementCount == 0 )
+        && ( document.querySelector("#pieces").children[1].childElementCount == 0 ) ){
         return true;
     }
     return false;
 }
 
-//affiche la fin de partie et le menu pour en commencer ue nouvelle
-function endGame(message){
 
-    document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre">${message}</div>`;
-    lockJeu();
-    document.querySelector("#action").innerHTML=`\
-        <div id="mode_classique">rejouer mode classique</div> \
-        <div id="mode_expert">rejouer mode expert</div> \
-    `;
-    document.querySelector(`#mode_classique`).addEventListener('click',function(){
-        mode="classique";
-        rejouer();
-    });
-    document.querySelector(`#mode_expert`).addEventListener('click',function(){
-        mode="expert";
-        rejouer();
-    });
+function retourMenu() {
+    window.location.pathname = "";
 }
-
 
 //plus possible de clickez dans la zone de jeu
 function lockJeu(){
@@ -199,18 +165,17 @@ function isWinLines(locP){
     return false;
 }
 
-function isWin(locP){
-    if ( isWinLines(locP) ){
-        return true;}
-    if (mode=="expert"){
+function isWin(locP, mode){
+    if ( isWinLines(locP) )
+        return true
+    if (mode==="expert")
         if ( isWinSquares(locP) ){return true;}
-    }
     return false;
 }
 
 function defineNameJoueurs(room){
     console.log(room)
-    joueur1["pseudo"]=pseudoJ1=room["users"][0][1];
-    joueur2["pseudo"]=pseudoJ2=room["users"][1][1]; 
-    console.log(joueur2["pseudo"], joueur1["pseudo"])
+    joueur1["nickname"]=nicknameJ1=room["users"][0][1];
+    joueur2["nickname"]=nicknameJ2=room["users"][1][1]; 
 }
+

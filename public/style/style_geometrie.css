@@ -104,13 +104,13 @@ header::before{
     align-items: center;
 }
 
-.choix_pseudo{
+.choix_nickname{
     pointer-events: auto;
     display: flex;
     flex-direction: row;
 }
 
-#pseudo{
+#nickname{
     display: flex;
     flex-direction: row;
     overflow: hidden;
@@ -308,6 +308,7 @@ input[type="text"]{
     justify-content: center;
     text-align: center;
 }
+
 
 
 #jeu {

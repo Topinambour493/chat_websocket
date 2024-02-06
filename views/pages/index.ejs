@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Quarto</title>
-    <link rel="stylesheet" href="style/style.css" type="text/css">
-    <link rel="stylesheet" href="style/loading.css" type="text/css">
-    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-    <script defer src="js/socket.js"></script>
-    <script defer src="js/socket_rooms.js"></script>
+    <%- include('../partials/head'); %>
   </head>
   <body>
     <header>
@@ -20,17 +15,17 @@
       </div>
     </header>
     <main>
-      <!-- HTML !-->
       <div id="mode">
         Mode:
-        <span><input type="radio" id="classic" name="mode" value="classic" checked> <label for="classic">Classique</label></span>
+        <span><input type="radio" id="classic" name="mode" value="classique" checked> <label for="classic">Classique</label></span>
         <span><input type="radio" id="expert" name="mode" value="expert"> <label for="expert">Expert</label></span>
       </div>
-      <button  class="button-19" id="join_public">play public room </button>
-      <button class="button-19" id="create_private">play private room</button>
+      <button  class="button-19" id="join_public">Jouer une partie publique</button>
+      <button class="button-19" id="create_local">Jouer une partie locale</button>
+      <button class="button-19" id="create_private">Créer une partie pivée</button>
       <form>
         <input id="room" type="text" oninput="this.value = this.value.toUpperCase()">
-        <button class="button-19" type="submit" id="join_private">join private room</button>
+        <button class="button-19" type="submit" id="join_private">Rejoindre une partie privée</button>
       </form>      
     </main>
     <footer>
