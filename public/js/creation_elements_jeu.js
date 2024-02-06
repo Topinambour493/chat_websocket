@@ -1,5 +1,5 @@
-var joueur1 = {"couleur": "red", "pseudo": "Joueur 1"};
-var joueur2 = {"couleur": "blue", "pseudo": "Joueur 2"};
+var joueur1 = {"couleur": "red", "nickname": "Joueur 1"};
+var joueur2 = {"couleur": "blue", "nickname": "Joueur 2"};
 var joueurs = [joueur1, joueur2];
 
 
@@ -59,10 +59,10 @@ function creation_pieces() {
 
 function fill_header(mode, first_player) {
     document.querySelector("#centre_header").innerHTML = `\
-        <div id="pseudo">${first_player["nickname"]}</div> \
+        <div id="nickname">${first_player["nickname"]}</div> \
         <div id="action">Choisis une pièce</div> \
     `;
-    document.querySelector("#pseudo").style.color = `${first_player["color"]}`;
+    document.querySelector("#nickname").style.color = `${first_player["color"]}`;
     document.querySelector("#mode_jeu").innerHTML = `mode ${mode}`;
 }
 
