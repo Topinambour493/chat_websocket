@@ -17,24 +17,20 @@ app.get('/', (req, res) => {
     res.render('pages/index.ejs');
 });
 
-app.get('/local', (req, res) => {
-    console.log(req.params)
-    res.render('pages/quarto.ejs', {type: "local"});
-});
-
-
 app.get('/:roomId', (req, res) => {
-    let roomId = req.params.roomId;
-    if (Object.keys(rooms).includes(roomId)) {
-        if (rooms[roomId]["users"].length < 2) {
-            res.render('pages/quarto.ejs', {type: "online"});
+        let roomId = req.params.roomId;
+        if (Object.keys(rooms).includes(roomId)) {
+            if (rooms[roomId]["type"] === "local" || rooms[roomId]["users"].length < 2) {
+                res.render('pages/quarto.ejs', {type: rooms[roomId]["type"], mode: rooms[roomId]["mode"]});
+            } else {
+                res.render('pages/full.ejs');
+            }
         } else {
-            res.render('pages/full.ejs');
+            res.render('pages/not_found.ejs');
         }
-    } else {
-        res.render('pages/not_found.ejs');
     }
-});
+)
+;
 
 function createNewRoom(length) {
     let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -76,6 +72,18 @@ io.on("connection", (socket) => {
             newRoom = createNewRoom(4);
         } while (Object.keys(rooms).includes(newRoom));
         rooms[newRoom] = {"users": [], "type": "private", "mode": mode, name: newRoom};
+        console.log(newRoom, " created");
+        callback({
+            nameRoom: newRoom
+        });
+    });
+
+    socket.on('create local room', (mode, callback) => {
+        let newRoom;
+        do {
+            newRoom = createNewRoom(4);
+        } while (Object.keys(rooms).includes(newRoom));
+        rooms[newRoom] = {"users": [], "type": "local", "mode": mode, name: newRoom};
         console.log(newRoom, " created");
         callback({
             nameRoom: newRoom

@@ -1,8 +1,6 @@
-var joueur1 = {"couleur": "red", "nickname": "Joueur 1"};
-var joueur2 = {"couleur": "blue", "nickname": "Joueur 2"};
+var joueur1 = {"color": "red", "nickname": "Joueur 1"};
+var joueur2 = {"color": "blue", "nickname": "Joueur 2"};
 var joueurs = [joueur1, joueur2];
-
-
 
 // création des emplacements du plateau
 table = document.querySelector("table")
@@ -28,7 +26,7 @@ function rejouer() {
 }
 
 function creation_pieces() {
-    var couleurs = ["blanc", "noir"];
+    var colors = ["blanc", "noir"];
     var formes = ["carre", "rond"];
     var tailles = ["grand", "petit"];
     var trous = ["plein", "trou"];
@@ -37,13 +35,13 @@ function creation_pieces() {
 
     //création des pièces
     piece = 0;
-    couleurs.forEach(couleur => {
+    colors.forEach(color => {
         formes.forEach(forme => {
             tailles.forEach(taille => {
                 trous.forEach(trou => {
-                    pieces.querySelector(`#pieces_${couleur}`).innerHTML += `\ 
+                    pieces.querySelector(`#pieces_${color}`).innerHTML += `\ 
                         <div class="pion centre">\
-                            <div id='p${piece}' class='${taille} ${forme} ${couleur} ${trou}'></div>\
+                            <div id='p${piece}' class='${taille} ${forme} ${color} ${trou}'></div>\
                         </div>\
                     `;
                     if (trou === "trou") {
@@ -57,13 +55,12 @@ function creation_pieces() {
     });
 }
 
-function fill_header(mode, first_player) {
+function fill_header(first_player) {
     document.querySelector("#centre_header").innerHTML = `\
         <div id="nickname">${first_player["nickname"]}</div> \
         <div id="action">Choisis une pièce</div> \
     `;
     document.querySelector("#nickname").style.color = `${first_player["color"]}`;
-    document.querySelector("#mode_jeu").innerHTML = `mode ${mode}`;
 }
 
 

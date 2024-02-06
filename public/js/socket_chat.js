@@ -68,7 +68,7 @@ socket.on('start game', function (room, first_player) {
         }
     ]
     creation_pieces();
-    fill_header(mode, first_player);
+    fill_header(first_player);
     nickname = localStorage.getItem('nickname')
     console.log(socket, "doubuy", first_player["nickname"]);
     animationMulti(room, players);

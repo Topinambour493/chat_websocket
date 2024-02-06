@@ -1,7 +1,5 @@
-var joueur1 = {"color": "red", "nickname": "Joueur 1"};
-var joueur2 = {"color": "blue", "nickname": "Joueur 2"};
-var joueurs = [joueur1, joueur2];
-mode="classique"
+let mode = document.getElementById("mode_jeu").innerHTML.split(" ")[1]
+
 function animationLocal() {
     for (let piece = 0; piece < 16; piece++) {
         document.querySelector(`#p${piece}`).addEventListener('click', function () {
@@ -11,10 +9,10 @@ function animationLocal() {
                 document.querySelector("#action").innerHTML = "Place la pièce";
                 if (document.querySelector("#nickname").innerHTML === joueur1["nickname"]) {
                     document.querySelector("#nickname").innerHTML = `${joueur2["nickname"]}`;
-                    document.querySelector("#nickname").style.color = `${joueur2["couleur"]}`;
+                    document.querySelector("#nickname").style.color = `${joueur2["color"]}`;
                 } else {
                     document.querySelector("#nickname").innerHTML = `${joueur1["nickname"]}`;
-                    document.querySelector("#nickname").style.color = `${joueur1["couleur"]}`;
+                    document.querySelector("#nickname").style.color = `${joueur1["color"]}`;
                 }
             }
         });
@@ -63,8 +61,7 @@ function defineNameJoueursLocal() {
 function jouer() {
     creation_pieces();
     let first_player = joueurs[Math.floor(Math.random() * 2)];
-    console.log(first_player)
-    fill_header("classique", first_player);
+    fill_header(first_player);
     unlockJeu();
     animationLocal();
 }

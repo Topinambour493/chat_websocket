@@ -10,10 +10,10 @@
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
     <script defer type="text/javascript" src="js/animation_jeu.js"></script>
     <script defer type="text/javascript" src="js/creation_elements_jeu.js"></script>
-    <% if (type === "online") { %>
-        <script defer src="js/socket_chat.js"></script>
-    <% } else{ %>
+    <% if (type === "local") { %>
         <script defer src="js/local_game.js"></script>
+    <% } else{ %>
+        <script defer src="js/socket_chat.js"></script>
     <% } %>
 </head>
 <body>
@@ -36,20 +36,20 @@
         <div class="choix_nickname centre">
             <label for="nicknameJ1">Nom Joueur 1:</label>
             <input type="text" name="nicknameJ1" id="nicknameJ1" spellcheck="false">
-            <input type="color" id="couleurJ1" name="couleurJ1" value="#ff0000">
+            <input type="color" id="colorJ1" name="colorJ1" value="#ff0000">
         </div>
         <div class="choix_nickname centre">
             <label for="nicknameJ2">Nom Joueur 2:</label>
             <input type="text" name="nicknameJ2" id="nicknameJ2" spellcheck="false">
-            <input type="color" id="couleurJ2" name="couleurJ2" value="#0000ff">
+            <input type="color" id="colorJ2" name="colorJ2" value="#0000ff">
         </div>
     </div>
-    <div id="mode_jeu"></div>
+    <div id="mode_jeu">mode <%= mode %></div>
     <div id="règles_jeu" class="règles centre">
         <div>Mode classique:</div>
         <div>Un joueur fait QUARTO et gagne la partie lorsque, en plaçant la pièce donnée,</div>
         <div>il crée une ligne verticale, horizontale ou diagonale avec</div>
-        <div>4 pièces ayant au moins 1 caractère en commun (taille, forme, couleur, percée ou non)</div>
+        <div>4 pièces ayant au moins 1 caractère en commun (taille, forme, color, percée ou non)</div>
         <br>
         <div>Mode expert:</div>
         <div>4 pièces ayant au moins 1 caractère en commun formant un carré permet également de gagner</div>

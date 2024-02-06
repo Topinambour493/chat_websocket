@@ -31,7 +31,10 @@ createLocal.addEventListener('click', function (e) {
         alert("entre un pseudo")
     } else {
         mode = getMode();
-        window.location.pathname = 'local';
+        console.log("je susi la ", mode)
+        socket.emit('create local room', mode, (response) => {
+            window.location.pathname = response.nameRoom;
+        });
     }
 });
 

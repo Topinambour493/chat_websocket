@@ -12,14 +12,14 @@ document.querySelector('body').addEventListener(('click'),function(){
 });
 
 // #### in local version ###
-document.querySelector('#couleurJ1').addEventListener(('change'),function(){
-    joueur1["couleur"]=document.querySelector('#couleurJ1').value;
-    document.querySelector("#nicknameJ1").style.color=`${joueur1["couleur"]}`;
+document.querySelector('#colorJ1').addEventListener(('change'),function(){
+    joueur1["color"]=document.querySelector('#colorJ1').value;
+    document.querySelector("#nicknameJ1").style.color=`${joueur1["color"]}`;
 });
 
-document.querySelector('#couleurJ2').addEventListener(('change'),function(){
-    joueur2["couleur"]=document.querySelector('#couleurJ2').value;
-    document.querySelector("#nicknameJ2").style.color=`${joueur2["couleur"]}`;
+document.querySelector('#colorJ2').addEventListener(('change'),function(){
+    joueur2["color"]=document.querySelector('#colorJ2').value;
+    document.querySelector("#nicknameJ2").style.color=`${joueur2["color"]}`;
 });
 // #### end in local version ###
 
