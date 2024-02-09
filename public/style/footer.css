@@ -1,0 +1,18 @@
+footer{
+    position: absolute;
+    bottom: 0;
+    padding:1vmin;
+    font-size: 2vmin;
+}
+
+footer::before{
+    content:"";
+    background-color:rgb(250, 252, 175);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0.3;
+    z-index: -1;
+}

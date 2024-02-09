@@ -1,0 +1,128 @@
+#jeu{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    pointer-events: none;
+}
+
+#pieces{
+    display: flex;
+    flex-direction: column;
+}
+
+#pieces > div{
+    display: flex;
+    justify-content:center;
+    margin-top: 0.5vmin;
+    margin-bottom: 0.5vmin;
+}
+
+#plateau{
+    position: relative;
+    padding:0.8vmin;
+    background-image: url("../images/bois_texture.png");
+    background-size: cover;
+    border-radius: 5%;
+    box-shadow: 3px 3px 3px black;
+}
+
+#quarto{
+    position: absolute;
+    display: flex;
+    top:0;
+    left:0;
+    right: 0;
+    bottom:0;
+    margin: auto;
+    font-size: 18vmin;
+    z-index:4;
+}
+
+.emplacement_piece::before{
+    content:"";
+    background-color:rgb(250, 252, 175);
+    position: absolute;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0.3;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.emplacement_piece {
+    position: relative;
+    width:13vmin;
+    height:13vmin;
+    margin:0.4vmin;
+    border-radius: 50%;
+    display: flex;
+    border: 1px solid black;
+    box-shadow: inset 3px 3px 3px black;
+}
+
+.pion{
+    position: relative;
+    padding:1.2vmin;
+    width: 9vmin;
+    height:9vmin;
+    display: flex;
+    z-index: 2;
+}
+
+.pion > .cursor_default{
+    cursor: default;
+}
+
+.petit{
+    width: 60%;
+    height: 60%;
+    cursor: pointer;
+    box-shadow: 3px 3px 3px black;
+}
+
+.grand{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    box-shadow: 3px 3px 3px black;
+}
+
+.noir{
+    background-image:url("../images/dark_stone_texture.png");
+    background-size:cover;
+}
+
+.blanc{
+    background-image:url("../images/white_stone_texture.png");
+    background-size:cover;
+}
+
+.rond{
+    border-radius: 50%;
+}
+
+.trou{
+    display: flex;
+}
+
+.trou_rond{
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+;}
+
+.petit > .trou_rond{
+    box-shadow: inset 3px 3px 0.75vmin black;
+}
+
+.grand > .trou_rond{
+    box-shadow: inset 3px 3px 1.3vmin black;
+}
+
+

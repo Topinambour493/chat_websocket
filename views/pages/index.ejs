@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <%- include('../partials/head'); %>
+    <script defer src="js/socket_rooms.js"></script>
 </head>
 <body>
 <header>
@@ -38,7 +39,7 @@
     <button class="button-19" id="create_private">Créer une partie pivée</button>
     <form>
         <input id="room" type="text" oninput="this.value = this.value.toUpperCase()">
-        <button class="button-19" type="submit" id="join_private">Rejoindre une partie privée</button>
+        <button class="button-19" type="submit" id="join_private"><label for="room">Rejoindre une partie privée</label></button>
     </form>
 </main>
 <footer>

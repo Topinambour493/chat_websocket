@@ -1,0 +1,113 @@
+header{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+header::before{
+    content:"";
+    background-color:rgb(250, 252, 175);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+#gauche_header{
+    position: absolute;
+    top:1vmin;
+    left:1vmin;
+    font-size: 90%;
+}
+
+#droite_header{
+    position: absolute;
+    top:0;
+    bottom:0;
+    margin:auto;
+    right:1vmin;
+    font-size: 55%;
+    display: flex;
+}
+
+#bouton_règles{
+    font-size: 60%;
+    display: flex;
+    width: 43.5%;
+    margin:0.5vmin;
+    border-radius: 50%;
+}
+
+.règles{
+    padding:0.75vmin;
+    background-color: turquoise;
+    cursor: pointer;
+}
+
+#règles_jeu{
+    font-size: 50%;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    height: 26vmin;
+    display: none;
+    z-index: 3;
+}
+
+#mode_jeu{
+    position: absolute;
+    top:1vmin;
+    right:1vmin;
+    font-size: 55%;
+}
+
+#centre_header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.choix_nickname{
+    pointer-events: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+#nickname{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#action{
+    display: flex;
+    flex-direction: row;
+    margin:0.75vmin;
+}
+
+#action > * {
+    cursor:pointer;
+    margin-left:2vmin;
+    margin-right: 2vmin;
+    padding:0.75vmin;
+    background-color:violet;
+    font-size: 80%;
+}
+
+input[type="text"]{
+    position:relative;
+    background-color:rgb(247, 219, 163);
+    width: 20vmin;
+    height:4vmin;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+    font-size:50%;
+}
