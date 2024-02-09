@@ -29,7 +29,6 @@ socket.on("choose piece", function (room, piece_id, players) {
         nickname.innerHTML = `${players[0]["nickname"]}`;
         nickname.style.color = `${players[0]["color"]}`;
     }
-    lockJeu();
     if (nickname.innerHTML === localStorage.getItem('nickname')) {
         unlockJeu();
     }
@@ -101,6 +100,7 @@ function animationMulti(room, players){
     for (let piece=0;piece<16;piece++){
         document.querySelector(`#p${piece}`).addEventListener('click',function(){
             if ( ( !document.querySelector("header > .pion") ) && ( document.querySelector(`#pieces #p${piece}`) ) ){
+                lockJeu();
                 socket.emit("choose piece", room,  this.id, players);
             }
         });
