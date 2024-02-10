@@ -8,29 +8,21 @@
 <body>
 <header>
     <div id="gauche_header">QUARTO!
-        <div id="bouton_règles" class="règles">Règles</div>
+        <div id="bouton_règles" class="règles button-19">Règles</div>
     </div>
     <div id="centre_header">
         <div id="nickname">Bienvenue au QUARTO!</div>
         <div class="choix_nickname centre">
-            <label for="username">Pseudo:</label>
+            <label for="username">Pseudo :</label>
             <input type="text" name="nicknameJ1" id="username" spellcheck="false"
                    oninput="localStorage.setItem('nickname', this.value);">
         </div>
     </div>
-    <div id="règles_jeu" class="règles centre">
-        <div>Mode classique:</div>
-        <div>Un joueur fait QUARTO et gagne la partie lorsque, en plaçant la pièce donnée,</div>
-        <div>il crée une ligne verticale, horizontale ou diagonale avec</div>
-        <div>4 pièces ayant au moins 1 caractère en commun (taille, forme, color, percée ou non)</div>
-        <br>
-        <div>Mode expert:</div>
-        <div>4 pièces ayant au moins 1 caractère en commun formant un carré permet également de gagner</div>
-    </div>
+    <%- include('../partials/rules'); %>
 </header>
 <main>
     <div id="mode">
-        Mode:
+        Mode :
         <span><input type="radio" id="classic" name="mode" value="classique" checked> <label
                     for="classic">Classique</label></span>
         <span><input type="radio" id="expert" name="mode" value="expert"> <label for="expert">Expert</label></span>
@@ -43,9 +35,6 @@
         <button class="button-19" type="submit" id="join_private"><label for="room">Rejoindre une partie privée</label></button>
     </form>
 </main>
-<footer>
-    QUARTO! est un jeu de plateau pour 2 joueurs inventé par Blaise Müller et distribué par <a target="_blank"
-                                                                                               href="http://www.gigamic.com">Gigamic</a>.
-</footer>
+<%- include('../partials/footer'); %>
 </body>
 </html>

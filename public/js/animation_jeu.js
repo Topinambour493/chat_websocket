@@ -20,9 +20,6 @@ function isEquality(){
 }
 
 
-function retourMenu() {
-    window.location.pathname = "";
-}
 
 //plus possible de clickez dans la zone de jeu
 function lockJeu(){

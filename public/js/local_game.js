@@ -39,11 +39,8 @@ function endGameLocal(message){
     document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre">${message}</div>`;
     lockJeu();
     document.querySelector("#action").innerHTML = `\
-      <div id="retour_menu">retour menu</div> \
+      <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu">retour menu</button></a> \
   `;
-    document.querySelector(`#retour_menu`).addEventListener('click', function () {
-        retourMenu();
-    });
 }
 
 function defineNameJoueursLocal() {

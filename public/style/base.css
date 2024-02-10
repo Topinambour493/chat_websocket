@@ -1,15 +1,15 @@
-*,::before,::after{
+*, ::before, ::after {
     margin: 0;
-    padding:0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-body,html{
+body, html {
     height: 100%;
-    width:100%;
+    width: 100%;
 }
 
-body{
+body {
     background-size: cover;
     display: flex;
     flex-direction: column;
@@ -19,16 +19,16 @@ body{
     color: black;
     font-size: 4vmin;
     font-weight: bold;
-    cursor:default;
+    cursor: default;
     background-color: green;
     background-image: url("../images/green_texture.png");
     padding-bottom: 3rem;
 }
 
-main{
+main {
     position: absolute;
-    top:50%;
-    left:50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }
 
@@ -94,13 +94,23 @@ a {
     color: black;
 }
 
+.text-decoration-none {
+    text-decoration: none;
+}
+
 form {
     text-align: center;
 }
 
-.centre{
+.centre {
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+}
+
+#mode {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
 }
 
