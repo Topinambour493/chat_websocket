@@ -18,9 +18,10 @@ socket.emit("init game", room, (response) => {
 
 socket.on("choose piece", function (room, piece_id, players) {
     piece = document.getElementById(piece_id)
+    console.log("ya", document.querySelector("#piece-to-place"))
     piece.className += " cursor_default";
-    document.querySelector("header").append(piece.parentElement);
     document.querySelector("#action").innerHTML = "Place la pièce";
+    document.querySelector("#piece-to-place").append(piece.parentElement);
     nickname = document.querySelector("#nickname")
     if (nickname.innerHTML === players[0]["nickname"]) {
         nickname.innerHTML = `${players[1]["nickname"]}`;
@@ -36,9 +37,9 @@ socket.on("choose piece", function (room, piece_id, players) {
     socket.on('place piece', function (room, locationPiece, piece_id, players) {
         //TODO: comprendre pourquoi la requete est effectué plusieurs foix.
         // Si c'est la 3eme piece alors il y aura 3 apels, PK?
-        if (document.querySelector("header > .pion")) {
+        if (document.querySelector("#piece-to-place > .pion")) {
             locationPiece_element = document.getElementById(piece_id)
-            locationPiece_element.append(document.querySelector("header > .pion"));
+            locationPiece_element.append(document.querySelector("#piece-to-place > .pion"));
             locationPiece_element.className += " cursor_default";
             document.querySelector("#action").innerHTML = "Choisis une pièce";
             if (isWin(locationPiece, mode)) {
@@ -88,7 +89,7 @@ socket.on("end game", function (room, message) {
 function animationMulti(room, players){
     for (let locationPiece=0;locationPiece<16;locationPiece++){
         document.querySelector(`#locP${locationPiece}`).addEventListener('click',function(){
-            if (document.querySelector("header > .pion") && getProperties_piece(locationPiece)==false){
+            if (document.querySelector("#piece-to-place > .pion") && getProperties_piece(locationPiece)==false){
                 socket.emit("place piece", room, locationPiece, this.id, players);
             }
         });
@@ -96,7 +97,7 @@ function animationMulti(room, players){
 
     for (let piece=0;piece<16;piece++){
         document.querySelector(`#p${piece}`).addEventListener('click',function(){
-            if ( ( !document.querySelector("header > .pion") ) && ( document.querySelector(`#pieces #p${piece}`) ) ){
+            if ( ( !document.querySelector("#piece-to-place > .pion") ) && ( document.querySelector(`#pieces #p${piece}`) ) ){
                 lockJeu();
                 socket.emit("choose piece", room,  this.id, players);
             }

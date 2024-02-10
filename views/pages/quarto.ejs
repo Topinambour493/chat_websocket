@@ -20,21 +20,24 @@
     </div>
 <% } %>
 <header>
-    <div id="gauche_header">QUARTO!
+    <div class="column-header">QUARTO!
         <div id="bouton_règles" class="règles button-19">Règles</div>
     </div>
     <div id="centre_header">
-        <div id="nickname">Bienvenue au QUARTO!</div>
-        <div id="action">
-            <a href="/" class="text-decoration-none">
-                <button class="button-19" id="retour_menu">retour menu</button>
-            </a>
+        <div class="centre">
+            <div id="nickname">Bienvenue au QUARTO!</div>
+            <div id="action">
+                <a href="/" class="text-decoration-none">
+                    <button class="button-19" id="retour_menu">retour menu</button>
+                </a>
+            </div>
         </div>
+        <div id="piece-to-place"></div>
     </div>
     <div id="mode_jeu">mode <%= mode %></div>
     <%- include('../partials/rules'); %>
 </header>
-<main>
+<main class="static">
     <div id="jeu">
         <div id="pieces">
             <div id="pieces_blanc"></div>

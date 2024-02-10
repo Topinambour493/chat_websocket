@@ -7,16 +7,21 @@
 </head>
 <body>
 <header>
-    <div id="gauche_header">QUARTO!
+    <div class="column-header">QUARTO!
         <div id="bouton_règles" class="règles button-19">Règles</div>
     </div>
     <div id="centre_header">
-        <div id="nickname">Bienvenue au QUARTO!</div>
-        <div class="choix_nickname centre">
-            <label for="username">Pseudo :</label>
-            <input type="text" name="nicknameJ1" id="username" spellcheck="false"
-                   oninput="localStorage.setItem('nickname', this.value);">
+        <div class="centre">
+            <div id="nickname">Bienvenue au QUARTO!</div>
+            <div class="choix_nickname centre">
+                <label for="username">Pseudo :</label>
+                <input type="text" name="nicknameJ1" id="username" spellcheck="false"
+                       oninput="localStorage.setItem('nickname', this.value);">
+            </div>
         </div>
+    </div>
+    <div class="visibility-hidden column-header" >QUARTO!
+        <div id="bouton_règles" class="règles button-19">Règles</div>
     </div>
     <%- include('../partials/rules'); %>
 </header>

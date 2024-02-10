@@ -57,8 +57,11 @@ function creation_pieces() {
 
 function fill_header(first_player) {
     document.querySelector("#centre_header").innerHTML = `\
-        <div id="nickname">${first_player["nickname"]}</div> \
-        <div id="action">Choisis une pièce</div> \
+        <div class="centre"> \ 
+            <div id="nickname">${first_player["nickname"]}</div> \
+            <div id="action">Choisis une pièce</div> \
+        </div> \
+        <div id="piece-to-place"></div> \
     `;
     document.querySelector("#nickname").style.color = `${first_player["color"]}`;
 }

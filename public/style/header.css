@@ -1,7 +1,7 @@
 header {
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     z-index: 6;
 }
@@ -18,21 +18,15 @@ header::before {
     z-index: -1;
 }
 
-#gauche_header {
-    position: absolute;
-    top: 1vmin;
-    left: 1vmin;
+.column-header {
+    padding: 1vmin;
     font-size: 90%;
     display: flex;
     flex-direction: column;
 }
 
 #droite_header {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    right: 1vmin;
+    padding: 1vmin;
     font-size: 55%;
     display: flex;
 }
@@ -59,17 +53,20 @@ header::before {
 }
 
 #mode_jeu {
-    position: absolute;
-    top: 1vmin;
-    right: 1vmin;
+    padding: 1vmin;
     font-size: 55%;
 }
 
 #centre_header {
     display: flex;
-    flex-direction: column;
     align-items: center;
     margin-bottom: 1vmin;
+}
+
+left-center-header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .choix_nickname {
@@ -84,11 +81,13 @@ header::before {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    justify-content: center;
 }
 
 #action {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     margin: 0.75vmin;
 }
 

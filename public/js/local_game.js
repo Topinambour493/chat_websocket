@@ -3,10 +3,10 @@ let mode = document.getElementById("mode_jeu").innerHTML.split(" ")[1]
 function animationLocal() {
     for (let piece = 0; piece < 16; piece++) {
         document.querySelector(`#p${piece}`).addEventListener('click', function () {
-            if ((!document.querySelector("header > .pion")) && (document.querySelector(`#pieces #p${piece}`))) {
-                document.querySelector("header").append(this.parentElement);
-                this.className += " cursor_default";
+            if ((!document.querySelector("#piece-to-place > .pion")) && (document.querySelector(`#pieces #p${piece}`))) {
                 document.querySelector("#action").innerHTML = "Place la pièce";
+                document.querySelector("#piece-to-place").append(this.parentElement);
+                this.className += " cursor_default";
                 if (document.querySelector("#nickname").innerHTML === joueur1["nickname"]) {
                     document.querySelector("#nickname").innerHTML = `${joueur2["nickname"]}`;
                     document.querySelector("#nickname").style.color = `${joueur2["color"]}`;
@@ -20,8 +20,8 @@ function animationLocal() {
 
     for (let locationPiece = 0; locationPiece < 16; locationPiece++) {
         document.querySelector(`#locP${locationPiece}`).addEventListener('click', function () {
-            if (document.querySelector("header > .pion") && getProperties_piece(locationPiece) == false) {
-                document.querySelector(`#locP${locationPiece}`).append(document.querySelector("header > .pion"));
+            if (document.querySelector("#piece-to-place > .pion") && getProperties_piece(locationPiece) == false) {
+                document.querySelector(`#locP${locationPiece}`).append(document.querySelector("#piece-to-place > .pion"));
                 document.querySelector(`#locP${locationPiece}`).className += " cursor_default";
                 document.querySelector("#action").innerHTML = "Choisis une pièce";
                 if (isWin(locationPiece, mode)) {
