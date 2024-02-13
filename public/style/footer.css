@@ -1,8 +1,6 @@
 footer{
-    position: absolute;
-    bottom: 0;
-    padding:1vmin;
-    font-size: 2vmin;
+    position: relative;
+    padding: 1vmin;
 }
 
 footer::before{

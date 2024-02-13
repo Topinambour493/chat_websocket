@@ -22,7 +22,6 @@ body {
     cursor: default;
     background-color: green;
     background-image: url("../images/green_texture.png");
-    padding-bottom: 3rem;
 }
 
 main {
