@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <%- include('../partials/head'); %>
+    <link rel="stylesheet" href="style/toggle.css" type="text/css">
     <script defer src="js/socket_rooms.js"></script>
     <script defer src="js/rules.js"></script>
 </head>
@@ -26,11 +27,16 @@
     <%- include('../partials/rules'); %>
 </header>
 <main>
-    <div id="mode">
-        Mode :
-        <span><input type="radio" id="classic" name="mode" value="classique" checked> <label
-                    for="classic">Classique</label></span>
-        <span><input type="radio" id="expert" name="mode" value="expert"> <label for="expert">Expert</label></span>
+    <div id="toggle-mode">
+        <div class="btn-container">
+            <label class="switch btn-color-mode-switch">
+                <input type="checkbox" name="mode" id="mode">
+                <label for="mode" data-on="Classique" data-off="Expert" class="btn-color-mode-switch-inner">
+                    <div>Classique</div>
+                    <div>Expert</div>
+                </label>
+            </label>
+        </div>
     </div>
     <button class="button-19" id="join_public">Jouer une partie publique</button>
     <button class="button-19" id="create_local">Jouer une partie locale</button>

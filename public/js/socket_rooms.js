@@ -9,8 +9,8 @@ var inputUsername = document.getElementById('username');
 inputUsername.value = localStorage.getItem('nickname')
 
 function getMode() {
-    mode = document.querySelector('input[name="mode"]:checked').value;
-    return mode;
+    mode = document.querySelector('#mode').checked;
+    return mode ? "expert" : "classique";
 }
 
 joinPublic.addEventListener('click', function (e) {
