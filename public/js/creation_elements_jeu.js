@@ -14,16 +14,6 @@ for (let a = 0; a < 4; a++) {
     table.appendChild(tr);
 }
 
-function rejouer() {
-    //supression des pièces déja créees
-    for (let i = 0; i < 16; i++) {
-        document.querySelector(`#p${i}`).parentElement.remove();
-    }
-    if (document.querySelector("#quarto")) {
-        document.querySelector("#quarto").remove();
-    }
-    jouer();
-}
 
 function creation_pieces() {
     var colors = ["blanc", "noir"];

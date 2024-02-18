@@ -53,10 +53,13 @@ async function disconnect(user_id) {
             rooms[room]["users"].splice(1, 1);
             if (rooms[room]["users"].length === 0) {
                 delete rooms[room];
+                socket.leave(room)
             }
         }
     }
 }
+
+
 
 io.on("connection", (socket) => {
     console.log(socket.id, " connected");
@@ -66,12 +69,31 @@ io.on("connection", (socket) => {
         disconnect(socket.id)
     });
 
+    socket.on("revenge", (room, mode, callback) => {
+        console.log("baba", rooms[room]["nextRoom"])
+        if (rooms[room]["nextRoom"] === undefined){
+            let newRoom;
+            do {
+                newRoom = createNewRoom(4);
+            } while (Object.keys(rooms).includes(newRoom));
+            rooms[room]["nextRoom"] = newRoom
+            rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom};
+        } else {
+            socket.leave(room);
+        }
+        newRoom = rooms[room]["nextRoom"]
+        console.log(newRoom, " created");
+        callback({
+            nextRoom: newRoom
+        })
+    })
+
     socket.on('create private room', (mode, callback) => {
         let newRoom;
         do {
             newRoom = createNewRoom(4);
         } while (Object.keys(rooms).includes(newRoom));
-        rooms[newRoom] = {"users": [], "type": "private", "mode": mode, name: newRoom};
+        rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom};
         console.log(newRoom, " created");
         callback({
             nameRoom: newRoom
@@ -104,8 +126,13 @@ io.on("connection", (socket) => {
 
     socket.on("deplace room", (room, nickname) => {
         socket.join(room)
+        console.log("deplace", room)
         rooms[room]["users"].push([socket.id, nickname]);
+        console.log(rooms[room])
     })
+
+
+
 
     socket.on("join public room", (mode, callback) => {
         let newRoom;
@@ -144,11 +171,13 @@ io.on("connection", (socket) => {
         let players = [
             {
                 "color": "red",
-                "nickname": roomDict["users"][0][1]
+                "nickname": roomDict["users"][0][1],
+                "user_id":  roomDict["users"][0][0]
             },
             {
                 "color": "blue",
-                "nickname": roomDict["users"][1][1]
+                "nickname": roomDict["users"][1][1],
+                "user_id":  roomDict["users"][1][0]
             }
         ]
         console.log(room);
@@ -170,6 +199,13 @@ io.on("connection", (socket) => {
 
     socket.on("end game", (room, message) => {
         io.to(room["name"]).emit("end game", room, message);
+    })
+
+    socket.on("get players in room", (room, callback) => {
+        console.log("nb players : ", rooms[room]["users"].length)
+        callback({
+            nb_players: rooms[room]["users"].length
+        });
     })
 });
 

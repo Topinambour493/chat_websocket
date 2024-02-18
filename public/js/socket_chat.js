@@ -1,5 +1,7 @@
 var socket = io();
 
+console.log("j'arrive")
+
 socket.emit('deplace room', window.location.pathname.substring(1), localStorage.getItem('nickname'))
 
 var messages = document.getElementById('messages');
@@ -7,18 +9,28 @@ var form = document.getElementById('form');
 var input = document.getElementById('input');
 var message = document.getElementById('message');
 var room = window.location.pathname.substring(1)
+var nextRoom ;
+
+function rejouer(){
+    socket.emit("revenge",room, mode, (response) => {
+        window.location.pathname = response.nextRoom;
+    })
+}
 
 
-socket.emit("init game", room, (response) => {
-    if (response.status === "second") {
-        socket.emit("start game", room);
-    }
-});
 
+function initGame(){
+    socket.emit("init game", room, (response) => {
+        console.log(response, response.status)
+        if (response.status === "second") {
+            socket.emit("start game", room);
+        }
+    });
+}
 
 socket.on("choose piece", function (room, piece_id, players) {
+    lockPieces()
     piece = document.getElementById(piece_id)
-    console.log("ya", document.querySelector("#piece-to-place"))
     piece.className += " cursor_default";
     document.querySelector("#action").innerHTML = "Place la pièce";
     document.querySelector("#piece-to-place").append(piece.parentElement);
@@ -31,7 +43,7 @@ socket.on("choose piece", function (room, piece_id, players) {
         nickname.style.color = `${players[0]["color"]}`;
     }
     if (nickname.innerHTML === localStorage.getItem('nickname')) {
-        unlockJeu();
+        unlockPlateau();
     }
 
     socket.on('place piece', function (room, locationPiece, piece_id, players) {
@@ -46,6 +58,10 @@ socket.on("choose piece", function (room, piece_id, players) {
                 socket.emit('end game', room, "QUARTO!")
             } else if (isEquality()) {
                 socket.emit('end game', room, "ÉGALITÉ!")
+            }
+            if (nickname.innerHTML === localStorage.getItem('nickname')) {
+                unlockPieces();
+                lockPlateau();
             }
         }
 
@@ -73,18 +89,30 @@ socket.on('start game', function (room, first_player) {
     console.log(socket, "doubuy", first_player["nickname"]);
     animationMulti(room, players);
     if (nickname === first_player["nickname"]) {
-        unlockJeu();
+        unlockPieces();
     }
 });
 
 
 socket.on("end game", function (room, message) {
-    document.querySelector("#jeu").innerHTML += `<div id="quarto" class="centre">${message}</div>`;
-    lockJeu();
+    lockPlateau();
+    document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre"><div>${message}</div><button class="button-19" id="revenge" onclick="rejouer()">revanche</button></div>`;
     document.querySelector("#action").innerHTML = `\
       <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu">retour menu</button></a> \
-  `;
+    `;
 });
+
+socket.on("revenge game", function (){
+    console.log("reinit");
+    //supression des pièces déja créees
+    for (let i = 0; i < 16; i++) {
+        document.querySelector(`#p${i}`).parentElement.remove();
+    }
+    if (document.querySelector("#quarto")) {
+        document.querySelector("#quarto").remove();
+    }
+    initGame()
+})
 
 function animationMulti(room, players){
     for (let locationPiece=0;locationPiece<16;locationPiece++){
@@ -98,10 +126,10 @@ function animationMulti(room, players){
     for (let piece=0;piece<16;piece++){
         document.querySelector(`#p${piece}`).addEventListener('click',function(){
             if ( ( !document.querySelector("#piece-to-place > .pion") ) && ( document.querySelector(`#pieces #p${piece}`) ) ){
-                lockJeu();
                 socket.emit("choose piece", room,  this.id, players);
             }
         });
     }
 }
 
+initGame();

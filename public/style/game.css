@@ -5,12 +5,12 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    pointer-events: none;
 }
 
 #pieces{
     display: flex;
     flex-direction: column;
+    pointer-events: none;
 }
 
 #pieces > div{
@@ -27,6 +27,7 @@
     background-size: cover;
     border-radius: 5%;
     box-shadow: 3px 3px 3px black;
+    pointer-events: none;
 }
 
 #quarto{

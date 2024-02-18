@@ -22,13 +22,22 @@ function isEquality(){
 
 
 //plus possible de clickez dans la zone de jeu
-function lockJeu(){
-    document.querySelector("#jeu").style.pointerEvents="none";
+function lockPlateau(){
+    document.querySelector("#plateau").style.pointerEvents="none";
 }
 
 // possible de clickez dans la zone de jeu
-function unlockJeu(){
-    document.querySelector("#jeu").style.pointerEvents="auto";
+function unlockPieces(){
+    document.querySelector("#pieces").style.pointerEvents="auto";
+}
+
+function unlockPlateau(){
+    document.querySelector("#plateau").style.pointerEvents="auto";
+}
+
+// possible de clickez dans la zone de jeu
+function lockPieces(){
+    document.querySelector("#pieces").style.pointerEvents="none";
 }
 
 // renvoit les propriétés de la piece présente dans l'emplacement i, si il n'y pas de pièce, renvoit false
