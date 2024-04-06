@@ -9,6 +9,8 @@
     <% if (type === "local") { %>
         <script defer src="js/local_game.js"></script>
     <% } else{ %>
+        <script src="/alertify.js"></script>
+        <link rel="stylesheet" href="/alertify.css" type="text/css">
         <script defer src="js/socket_chat.js"></script>
     <% } %>
 </head>

@@ -1,5 +1,9 @@
 var socket = io();
 
+alertify.set('notifier','position', 'top-center');
+
+
+
 console.log("j'arrive")
 
 socket.emit('deplace room', window.location.pathname.substring(1), localStorage.getItem('nickname'))
@@ -12,9 +16,11 @@ var room = window.location.pathname.substring(1)
 var nextRoom ;
 
 function rejouer(){
-    socket.emit("revenge",room, mode, (response) => {
-        window.location.pathname = response.nextRoom;
-    })
+    socket.emit("propose revenge", room)
+}
+
+function returnMenu(){
+    socket.emit("not revenge", room)
 }
 
 
@@ -28,7 +34,30 @@ function initGame(){
     });
 }
 
-socket.on("choose piece", function (room, piece_id, players) {
+socket.on('test', function (){
+    document.body.innerHTML = "test1"
+})
+
+socket.on("revenge proposal", function(){
+    alertify.confirm("Votre adversaire souhaite une revanche",
+        function(){
+            socket.emit("revenge accepted", room, mode)
+        },
+        function(){
+            socket.emit("revenge refused", room)
+        }
+    );
+})
+
+socket.on("revenge", function (nextRoom){
+    window.location.pathname = nextRoom;
+})
+
+socket.on('not revenge', function (){
+  alertify.error("revanche refusé")
+})
+
+socket.on("place piece", function (room, piece_id, players) {
     lockPieces()
     piece = document.getElementById(piece_id)
     piece.className += " cursor_default";
@@ -46,7 +75,7 @@ socket.on("choose piece", function (room, piece_id, players) {
         unlockPlateau();
     }
 
-    socket.on('place piece', function (room, locationPiece, piece_id, players) {
+    socket.on('choose piece', function (room, locationPiece, piece_id, players) {
         //TODO: comprendre pourquoi la requete est effectué plusieurs foix.
         // Si c'est la 3eme piece alors il y aura 3 apels, PK?
         if (document.querySelector("#piece-to-place > .pion")) {
@@ -73,7 +102,7 @@ socket.on("choose piece", function (room, piece_id, players) {
 socket.on('start game', function (room, first_player) {
     document.getElementById("loader").style.display = "none";
     mode = room["mode"]
-    players = [
+    let players= [
         {
             "color": "red",
             "nickname": room["users"][0][1]
@@ -85,7 +114,7 @@ socket.on('start game', function (room, first_player) {
     ]
     creation_pieces();
     fill_header(first_player);
-    nickname = localStorage.getItem('nickname')
+    let nickname = localStorage.getItem('nickname')
     console.log(socket, "doubuy", first_player["nickname"]);
     animationMulti(room, players);
     if (nickname === first_player["nickname"]) {
@@ -98,7 +127,7 @@ socket.on("end game", function (room, message) {
     lockPlateau();
     document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre"><div>${message}</div><button class="button-19" id="revenge" onclick="rejouer()">revanche</button></div>`;
     document.querySelector("#action").innerHTML = `\
-      <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu">retour menu</button></a> \
+      <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu" onclick="returnMenu()">retour menu</button></a> \
     `;
 });
 

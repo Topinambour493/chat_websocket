@@ -12,6 +12,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').__express);
 
+app.get('/alertify.js', function(req, res) {
+    res.sendFile(__dirname + '/node_modules/alertifyjs/build/alertify.js');
+});
+
+app.get('/alertify.css', function(req, res) {
+    res.sendFile(__dirname + '/node_modules/alertifyjs/build/css/alertify.css');
+});
 
 app.get('/', (req, res) => {
     res.render('pages/index.ejs');
@@ -69,7 +76,7 @@ io.on("connection", (socket) => {
         disconnect(socket.id)
     });
 
-    socket.on("revenge", (room, mode, callback) => {
+    socket.on("revenge accepted", (room, mode) => {
         console.log("baba", rooms[room]["nextRoom"])
         if (rooms[room]["nextRoom"] === undefined){
             let newRoom;
@@ -83,9 +90,16 @@ io.on("connection", (socket) => {
         }
         newRoom = rooms[room]["nextRoom"]
         console.log(newRoom, " created");
-        callback({
-            nextRoom: newRoom
-        })
+        io.to(room).emit('revenge', newRoom);
+    })
+
+    socket.on("revenge refused", (room) => {
+        console.log("not revenge", room)
+        socket.to(room).emit("not revenge");
+    })
+
+    socket.on('not revenge', (room) => {
+        io.to(room).emit("not revenge")
     })
 
     socket.on('create private room', (mode, callback) => {
@@ -188,13 +202,13 @@ io.on("connection", (socket) => {
 
     socket.on("choose piece", (room, piece_id, players) => {
         console.log(piece_id, "choose")
-        io.to(room["name"]).emit("choose piece", room, piece_id, players);
+        io.to(room["name"]).emit("place piece", room, piece_id, players);
     });
 
 
     socket.on("place piece", (room, locationPiece, piece_id, players) => {
         console.log(piece_id, "place piece on")
-        io.to(room["name"]).emit("place piece", room, locationPiece, piece_id, players);
+        io.to(room["name"]).emit("choose piece", room, locationPiece, piece_id, players);
     });
 
     socket.on("end game", (room, message) => {
@@ -206,6 +220,11 @@ io.on("connection", (socket) => {
         callback({
             nb_players: rooms[room]["users"].length
         });
+    })
+
+    socket.on("propose revenge", (room) => {
+        console.log("propose revenge", room)
+        socket.to(room).emit("revenge proposal", room);
     })
 });
 
