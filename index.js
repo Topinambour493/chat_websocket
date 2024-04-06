@@ -13,11 +13,11 @@ app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').__express);
 
 app.get('/alertify.js', function(req, res) {
-    res.sendFile(__dirname + '/node_modules/alertifyjs/build/alertify.js');
+    res.sendFile('node_modules/alertifyjs/build/alertify.js', {root: __dirname });
 });
 
 app.get('/alertify.css', function(req, res) {
-    res.sendFile(__dirname + '/node_modules/alertifyjs/build/css/alertify.css');
+    res.sendFile('node_modules/alertifyjs/build/css/alertify.css', {root: __dirname });
 });
 
 app.get('/', (req, res) => {
@@ -87,6 +87,7 @@ io.on("connection", (socket) => {
             rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom};
         } else {
             socket.leave(room);
+            // io.to(room["name"]).emit("test")
         }
         newRoom = rooms[room]["nextRoom"]
         console.log(newRoom, " created");

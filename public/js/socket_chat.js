@@ -24,6 +24,10 @@ function returnMenu(){
 }
 
 
+// window.addEventListener("beforeunload", function (event) {
+//     event.preventDefault();
+//     event.returnValue = true;
+// });
 
 function initGame(){
     socket.emit("init game", room, (response) => {
