@@ -12,13 +12,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').__express);
 
-app.get('/alertify.js', function(req, res) {
-    res.sendFile('public/js/alertify.js', {root: __dirname });
-});
-
-app.get('/alertify.css', function(req, res) {
-    res.sendFile('public/style/alertify.css', {root: __dirname });
-});
 
 app.get('/', (req, res) => {
     res.render('pages/index.ejs');
