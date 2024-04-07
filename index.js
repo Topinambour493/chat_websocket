@@ -17,7 +17,7 @@ app.get('/alertify.js', function(req, res) {
 });
 
 app.get('/alertify.css', function(req, res) {
-    res.sendFile('public/style//alertify.css', {root: __dirname });
+    res.sendFile('public/style/alertify.css', {root: __dirname });
 });
 
 app.get('/', (req, res) => {
