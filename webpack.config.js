@@ -16,7 +16,6 @@ module.exports = {
             patterns: [
                 {from: 'views', to: 'views'},
                 {from: 'public', to: 'public'},// Copie le contenu de 'public' dans le dossier de sortie
-                {from: 'node_modules', to: 'node_modules'},
             ]
         })
     ]
