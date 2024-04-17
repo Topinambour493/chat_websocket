@@ -20,7 +20,10 @@ app.get('/', (req, res) => {
 app.get('/:roomId', (req, res) => {
         let roomId = req.params.roomId;
         if (Object.keys(rooms).includes(roomId)) {
-            if (rooms[roomId]["type"] === "local" || rooms[roomId]["users"].length < 2) {
+            if (rooms[roomId]["type"] === "local" || ( rooms[roomId]["users"].length < 2 && rooms[roomId]["status_game"] === "not started") ) {
+                if (rooms[roomId]["users"].length === 1){
+                    rooms[roomId]["status_game"] = "started"
+                }
                 res.render('pages/quarto.ejs', {type: rooms[roomId]["type"], mode: rooms[roomId]["mode"]});
             } else {
                 res.render('pages/full.ejs');
@@ -42,18 +45,19 @@ function createNewRoom(length) {
     return str;
 }
 
-async function disconnect(user_id) {
+function disconnect(user_id) {
+    console.log("disconnected de la terre", rooms)
     for (let [room, value] of Object.entries(rooms)) {
-        if (rooms[room]["users"][0] === user_id) {
-            rooms[room]["users"].splice(0, 1);
-            if (rooms[room]["users"].length === 0) {
+        if (rooms[room]["users"].length === 1){
+            if (rooms[room]["users"][0].id === user_id) {
+                rooms[room]["users"].splice(0, 1);
+                console.log(room, "deleted")
                 delete rooms[room];
             }
-        } else if ((rooms[room]["users"][1] === user_id)) {
-            rooms[room]["users"].splice(1, 1);
-            if (rooms[room]["users"].length === 0) {
-                delete rooms[room];
-                socket.leave(room)
+        } else if (rooms[room]["users"].length === 2){
+            if (rooms[room]["users"][1].id === user_id) {
+                rooms[room]["users"].splice(1, 1);
+                io.to(room).emit("end game disconnected")
             }
         }
     }
@@ -63,6 +67,15 @@ async function disconnect(user_id) {
 
 io.on("connection", (socket) => {
     console.log(socket.id, " connected");
+
+    socket.on('quit game', (room) => {
+        console.log("user quit", room)
+        if (rooms[room]["users"].length === 1) {
+            console.log(room, "deleted")
+            delete rooms[room];
+            socket.leave(room)
+        }
+    })
 
     socket.on('disconnect', () => {
         console.log(socket.id, " disconnected")
@@ -77,7 +90,7 @@ io.on("connection", (socket) => {
                 newRoom = createNewRoom(4);
             } while (Object.keys(rooms).includes(newRoom));
             rooms[room]["nextRoom"] = newRoom
-            rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom};
+            rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom, status_game: "not started"};
         } else {
             socket.leave(room);
             // io.to(room["name"]).emit("test")
@@ -101,7 +114,7 @@ io.on("connection", (socket) => {
         do {
             newRoom = createNewRoom(4);
         } while (Object.keys(rooms).includes(newRoom));
-        rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom};
+        rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom, status_game: "not started"};
         console.log(newRoom, " created");
         callback({
             nameRoom: newRoom
@@ -113,7 +126,7 @@ io.on("connection", (socket) => {
         do {
             newRoom = createNewRoom(4);
         } while (Object.keys(rooms).includes(newRoom));
-        rooms[newRoom] = {"users": [], "type": "local", "mode": mode, name: newRoom};
+        rooms[newRoom] = {"users": [], "type": "local", "mode": mode, name: newRoom, status_game: "not started"};
         console.log(newRoom, " created");
         callback({
             nameRoom: newRoom
@@ -121,7 +134,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on('join room private', (room, callback) => {
-        if (Object.keys(rooms).includes(room)) {
+        if (Object.keys(rooms).includes(room) && rooms[room]["status_game"] === 'not started') {
             callback({
                 status: "ok"
             });
@@ -135,7 +148,7 @@ io.on("connection", (socket) => {
     socket.on("deplace room", (room, nickname) => {
         socket.join(room)
         console.log("deplace", room)
-        rooms[room]["users"].push([socket.id, nickname]);
+        rooms[room]["users"].push({"id":socket.id, "nickname":nickname});
         console.log(rooms[room])
     })
 
@@ -147,16 +160,17 @@ io.on("connection", (socket) => {
         for (let [room, value] of Object.entries(rooms)) {
             if (rooms[room]["users"].length === 1 &&
                 rooms[room]["type"] === 'public' &&
-                rooms[room]["mode"] === mode) {
-                callback({
-                    nameRoom: room
-                });
+                rooms[room]["mode"] === mode &&
+                rooms[room]["status_game"] === 'not started') {
+                newRoom = room
             }
         }
-        do {
-            newRoom = createNewRoom(4);
-        } while (Object.keys(rooms).includes(newRoom));
-        rooms[newRoom] = {"users": [], "type": "public", "mode": mode, name: newRoom};
+        if (!newRoom){
+            do {
+                newRoom = createNewRoom(4);
+            } while (Object.keys(rooms).includes(newRoom));
+            rooms[newRoom] = {"users": [], "type": "public", "mode": mode, name: newRoom, status_game: "not started"};
+        }
         callback({
             nameRoom: newRoom
         });
@@ -179,13 +193,13 @@ io.on("connection", (socket) => {
         let players = [
             {
                 "color": "red",
-                "nickname": roomDict["users"][0][1],
-                "user_id":  roomDict["users"][0][0]
+                "nickname": roomDict["users"][0].nickname,
+                "user_id":  roomDict["users"][0].id
             },
             {
                 "color": "blue",
-                "nickname": roomDict["users"][1][1],
-                "user_id":  roomDict["users"][1][0]
+                "nickname": roomDict["users"][1].nickname,
+                "user_id":  roomDict["users"][1].id
             }
         ]
         console.log(room);
@@ -206,6 +220,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("end game", (room, message) => {
+        rooms[room.name].status_game = "ended";
+        console.log("end game", rooms[room.name])
         io.to(room["name"]).emit("end game", room, message);
     })
 
@@ -217,7 +233,9 @@ io.on("connection", (socket) => {
     })
 
     socket.on("propose revenge", (room) => {
-        console.log("propose revenge", room)
+        if (rooms[room]["users"].length === 1){
+            io.to(room).emit("not revenge");
+        }
         socket.to(room).emit("revenge proposal", room);
     })
 });

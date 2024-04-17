@@ -41,6 +41,9 @@
     font-size: 18vmin;
     z-index:4;
 }
+#quarto.forfeit{
+    font-size: 9vmin;
+}
 
 .emplacement_piece::before{
     content:"";

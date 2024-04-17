@@ -2,18 +2,17 @@ var socket = io();
 
 alertify.set('notifier','position', 'top-center');
 
-
-
-console.log("j'arrive")
-
-socket.emit('deplace room', window.location.pathname.substring(1), localStorage.getItem('nickname'))
-
 var messages = document.getElementById('messages');
 var form = document.getElementById('form');
 var input = document.getElementById('input');
 var message = document.getElementById('message');
 var room = window.location.pathname.substring(1)
 var nextRoom ;
+
+
+console.log("j'arrive")
+
+socket.emit('deplace room', room, localStorage.getItem('nickname'))
 
 function rejouer(){
     socket.emit("propose revenge", room)
@@ -55,6 +54,14 @@ socket.on("revenge proposal", function(){
 
 socket.on("revenge", function (nextRoom){
     window.location.pathname = nextRoom;
+})
+
+socket.on("end game disconnected", function (){
+    lockPlateau();
+    document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre forfeit"><div>Quarto par forfait</div></div>`;
+    document.querySelector("#action").innerHTML = `\
+      <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu" onclick="returnMenu()">retour menu</button></a> \
+    `;
 })
 
 socket.on('not revenge', function (){
@@ -109,11 +116,11 @@ socket.on('start game', function (room, first_player) {
     let players= [
         {
             "color": "red",
-            "nickname": room["users"][0][1]
+            "nickname": room["users"][0].nickname
         },
         {
             "color": "blue",
-            "nickname": room["users"][1][1]
+            "nickname": room["users"][1].nickname
         }
     ]
     creation_pieces();
@@ -150,7 +157,7 @@ socket.on("revenge game", function (){
 function animationMulti(room, players){
     for (let locationPiece=0;locationPiece<16;locationPiece++){
         document.querySelector(`#locP${locationPiece}`).addEventListener('click',function(){
-            if (document.querySelector("#piece-to-place > .pion") && getProperties_piece(locationPiece)==false){
+            if (document.querySelector("#piece-to-place > .pion") && getProperties_piece(locationPiece)===false){
                 socket.emit("place piece", room, locationPiece, this.id, players);
             }
         });
@@ -164,5 +171,6 @@ function animationMulti(room, players){
         });
     }
 }
+
 
 initGame();
