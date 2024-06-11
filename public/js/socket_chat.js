@@ -10,8 +10,6 @@ var room = window.location.pathname.substring(1)
 var nextRoom ;
 
 
-console.log("j'arrive")
-
 socket.emit('deplace room', room, localStorage.getItem('nickname'))
 
 function rejouer(){
@@ -30,7 +28,6 @@ function returnMenu(){
 
 function initGame(){
     socket.emit("init game", room, (response) => {
-        console.log(response, response.status)
         if (response.status === "second") {
             socket.emit("start game", room);
         }
@@ -42,7 +39,7 @@ socket.on('test', function (){
 })
 
 socket.on("revenge proposal", function(){
-    alertify.confirm("Votre adversaire souhaite une revanche",
+    alertify.confirm("","Votre adversaire souhaite une revanche",
         function(){
             socket.emit("revenge accepted", room, mode)
         },

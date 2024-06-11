@@ -32,7 +32,12 @@
   max-width: 500px;
   padding: 24px 24px 0 24px;
   outline: 0;
-  background-color: #fff;
+  background-color: #1899D6;
+  font-family: din-round,sans-serif;
+  color: #FFFFFF;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
 }
 .alertify .ajs-dialog.ajs-capture:before {
   content: '';
@@ -69,9 +74,7 @@
   background-position: center;
   cursor: pointer;
 }
-.alertify .ajs-commands button.ajs-close {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAh0lEQVQYlY2QsQ0EIQwEB9cBAR1CJUaI/gigDnwR6NBL/7/xWLNrZ2b8EwGotVpr7eOitWa1VjugiNB7R1UPrKrWe0dEAHBbXUqxMQbeewDmnHjvyTm7C3zDwAUd9c63YQdUVdu6EAJzzquz7HXvTiklt+H9DQFYaxFjvDqllFyMkbXWvfpXHjJrWFgdBq/hAAAAAElFTkSuQmCC);
-}
+
 .alertify .ajs-commands button.ajs-maximize {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8xMy8xNOrZqugAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAOUlEQVQYlWP8//8/AzGAhYGBgaG4uBiv6t7eXkYmooxjYGAgWiELsvHYFMCcRX2rSXcjoSBiJDbAAeD+EGu+8BZcAAAAAElFTkSuQmCC);
 }
@@ -79,7 +82,10 @@
   margin: -24px;
   margin-bottom: 0;
   padding: 16px 24px;
-  background-color: #fff;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
 }
 .alertify .ajs-body {
   min-height: 56px;
@@ -92,14 +98,32 @@
   margin-left: -24px;
   margin-right: -24px;
   min-height: 43px;
-  background-color: #fff;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
 }
 .alertify .ajs-footer .ajs-buttons.ajs-primary {
   text-align: right;
 }
 .alertify .ajs-footer .ajs-buttons.ajs-primary .ajs-button {
   margin: 4px;
+  background-color: #1CB0F6;
+  color : #FFFFFF;
+  border: solid #1899D6;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  transition: filter .2s;
+  cursor: pointer;
 }
+
+.ajs-button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+
+
 .alertify .ajs-footer .ajs-buttons.ajs-auxiliary {
   float: left;
   clear: none;
@@ -150,6 +174,7 @@
 }
 .alertify.ajs-closable .ajs-commands button.ajs-close {
   display: inline-block;
+  color: #111111;
 }
 .alertify.ajs-maximized .ajs-dialog {
   width: 100% !important;

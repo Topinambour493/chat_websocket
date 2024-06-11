@@ -5,6 +5,11 @@ const server = http.createServer(app);
 const {Server} = require("socket.io");
 const io = new Server(server);
 const path = require("path");
+const fs = require('fs');
+
+var logs = fs.createWriteStream('logs.txt');
+var endLog = " "+  Date() + "\n"
+
 
 let rooms = {}
 
@@ -46,12 +51,12 @@ function createNewRoom(length) {
 }
 
 function disconnect(user_id) {
-    console.log("disconnected de la terre", rooms)
+    logs.write("disconnected " + rooms + endLog)
     for (let [room, value] of Object.entries(rooms)) {
         if (rooms[room]["users"].length === 1){
             if (rooms[room]["users"][0].id === user_id) {
                 rooms[room]["users"].splice(0, 1);
-                console.log(room, "deleted")
+                logs.write(room+ " deleted" + endLog)
                 delete rooms[room];
             }
         } else if (rooms[room]["users"].length === 2){
@@ -66,24 +71,24 @@ function disconnect(user_id) {
 
 
 io.on("connection", (socket) => {
-    console.log(socket.id, " connected");
+    logs.write(socket.id+" connected"+endLog);
 
     socket.on('quit game', (room) => {
-        console.log("user quit", room)
+        logs.write("user quit "+  room+endLog)
         if (rooms[room]["users"].length === 1) {
-            console.log(room, "deleted")
+            logs.write(room+ "deleted"+endLog);
             delete rooms[room];
             socket.leave(room)
         }
     })
 
     socket.on('disconnect', () => {
-        console.log(socket.id, " disconnected")
+        logs.write(socket.id+ " disconnected"+endLog)
         disconnect(socket.id)
     });
 
     socket.on("revenge accepted", (room, mode) => {
-        console.log("baba", rooms[room]["nextRoom"])
+        logs.write("revenge accepted " + rooms[room]["nextRoom"] + endLog)
         if (rooms[room]["nextRoom"] === undefined){
             let newRoom;
             do {
@@ -96,12 +101,12 @@ io.on("connection", (socket) => {
             // io.to(room["name"]).emit("test")
         }
         newRoom = rooms[room]["nextRoom"]
-        console.log(newRoom, " created");
+        logs.write(newRoom+ " created"+ endLog);
         io.to(room).emit('revenge', newRoom);
     })
 
     socket.on("revenge refused", (room) => {
-        console.log("not revenge", room)
+        logs.write("not revenge "+ room + endLog)
         socket.to(room).emit("not revenge");
     })
 
@@ -115,7 +120,7 @@ io.on("connection", (socket) => {
             newRoom = createNewRoom(4);
         } while (Object.keys(rooms).includes(newRoom));
         rooms[newRoom] = {"users": [], "type": "private", "mode": mode, "name": newRoom, status_game: "not started"};
-        console.log(newRoom, " created");
+        logs.write(newRoom+" created"+endLog);
         callback({
             nameRoom: newRoom
         });
@@ -127,7 +132,7 @@ io.on("connection", (socket) => {
             newRoom = createNewRoom(4);
         } while (Object.keys(rooms).includes(newRoom));
         rooms[newRoom] = {"users": [], "type": "local", "mode": mode, name: newRoom, status_game: "not started"};
-        console.log(newRoom, " created");
+        logs.write(newRoom+ " created"+endLog);
         callback({
             nameRoom: newRoom
         });
@@ -147,9 +152,9 @@ io.on("connection", (socket) => {
 
     socket.on("deplace room", (room, nickname) => {
         socket.join(room)
-        console.log("deplace", room)
+        logs.write("deplace "+ room+ endLog)
         rooms[room]["users"].push({"id":socket.id, "nickname":nickname});
-        console.log(rooms[room])
+        logs.write(rooms[room]+endLog)
     })
 
 
@@ -202,31 +207,29 @@ io.on("connection", (socket) => {
                 "user_id":  roomDict["users"][1].id
             }
         ]
-        console.log(room);
+        logs.write(room + endLog);
         let first_player = players[Math.floor(Math.random() * 2)];
         io.to(room).emit('start game', roomDict, first_player);
     });
 
 
     socket.on("choose piece", (room, piece_id, players) => {
-        console.log(piece_id, "choose")
         io.to(room["name"]).emit("place piece", room, piece_id, players);
     });
 
 
     socket.on("place piece", (room, locationPiece, piece_id, players) => {
-        console.log(piece_id, "place piece on")
         io.to(room["name"]).emit("choose piece", room, locationPiece, piece_id, players);
     });
 
     socket.on("end game", (room, message) => {
         rooms[room.name].status_game = "ended";
-        console.log("end game", rooms[room.name])
+        logs.write("end game "+ rooms[room.name]+endLog)
         io.to(room["name"]).emit("end game", room, message);
     })
 
     socket.on("get players in room", (room, callback) => {
-        console.log("nb players : ", rooms[room]["users"].length)
+        logs.write("nb players : "+ rooms[room]["users"].length + endLog)
         callback({
             nb_players: rooms[room]["users"].length
         });

@@ -1,16 +1,3 @@
-// #### in local version ###
-document.querySelector('#colorJ1').addEventListener(('change'),function(){
-    joueur1["color"]=document.querySelector('#colorJ1').value;
-    document.querySelector("#nicknameJ1").style.color=`${joueur1["color"]}`;
-});
-
-document.querySelector('#colorJ2').addEventListener(('change'),function(){
-    joueur2["color"]=document.querySelector('#colorJ2').value;
-    document.querySelector("#nicknameJ2").style.color=`${joueur2["color"]}`;
-});
-// #### end in local version ###
-
-
 function isEquality(){
     if ( ( document.querySelector("#pieces").children[0].childElementCount == 0 )
         && ( document.querySelector("#pieces").children[1].childElementCount == 0 ) ){
@@ -18,7 +5,6 @@ function isEquality(){
     }
     return false;
 }
-
 
 
 //plus possible de clickez dans la zone de jeu
