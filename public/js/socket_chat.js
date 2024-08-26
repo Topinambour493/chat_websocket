@@ -55,9 +55,11 @@ socket.on("revenge", function (nextRoom){
 
 socket.on("end game disconnected", function (){
     lockPlateau();
-    document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre forfeit"><div>Quarto par forfait</div></div>`;
-    document.querySelector("#action").innerHTML = `\
-      <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu" onclick="returnMenu()">retour menu</button></a> \
+    document.querySelector("#jeu").innerHTML+=`
+        <div id="quarto" class="centre forfait"> 
+            <div>Quarto par forfait</div> 
+            <a href="/" class="text-decoration-none button-19" onclick="returnMenu()">retour menu</a> 
+        </div>
     `;
 })
 
@@ -123,7 +125,6 @@ socket.on('start game', function (room, first_player) {
     creation_pieces();
     fill_header(first_player);
     let nickname = localStorage.getItem('nickname')
-    console.log(socket, "doubuy", first_player["nickname"]);
     animationMulti(room, players);
     if (nickname === first_player["nickname"]) {
         unlockPieces();
@@ -133,9 +134,12 @@ socket.on('start game', function (room, first_player) {
 
 socket.on("end game", function (room, message) {
     lockPlateau();
-    document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre"><div>${message}</div><button class="button-19" id="revenge" onclick="rejouer()">revanche</button></div>`;
-    document.querySelector("#action").innerHTML = `\
-      <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu" onclick="returnMenu()">retour menu</button></a> \
+    document.querySelector("#jeu").innerHTML+=`
+        <div id="quarto" class="centre">
+            <div>${message}</div>
+            <button class="button-19" id="revenge" onclick="rejouer()">revanche</button>
+            <a href="/" class="text-decoration-none button-19" onclick="returnMenu()">retour menu</a> 
+        </div>
     `;
 });
 

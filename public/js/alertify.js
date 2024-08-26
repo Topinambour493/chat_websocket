@@ -67,8 +67,8 @@
         glossary:{
             title:'AlertifyJS',
             ok: 'OK',
-            cancel: 'Cancel',
-            acccpt: 'Accept',
+            cancel: 'Refuser',
+            accept: 'Accept',
             deny: 'Deny',
             confirm: 'Confirm',
             decline: 'Decline',

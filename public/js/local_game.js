@@ -40,10 +40,15 @@ function animationLocal() {
 
 function endGameLocal(message){
     lockPlateau();
-    document.querySelector("#jeu").innerHTML+=`<div id="quarto" class="centre"><div>${message}</div><button class="button-19" id="revenge">revanche</button></div>`;
-    document.querySelector("#action").innerHTML = `\
-      <a href="/" class="text-decoration-none"><button class="button-19" id="retour_menu">retour menu</button></a> \
+    document.querySelector("#jeu").innerHTML+=`
+        <div id="quarto" class="centre"> 
+            <div>${message}</div> 
+            <button class="button-19" id="revenge">revanche</button> 
+            <a href="/" class="text-decoration-none button-19">retour menu</a> 
+        </div>
     `;
+
+
     document.getElementById("revenge").addEventListener("click", function (){
         rejouer();
     })
