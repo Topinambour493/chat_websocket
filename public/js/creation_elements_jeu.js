@@ -1,5 +1,5 @@
-var joueur1 = {"color": "red", "nickname": "Joueur 1"};
-var joueur2 = {"color": "blue", "nickname": "Joueur 2"};
+var joueur1 = {"color": "red", "nickname": localStorage.getItem('nickname')};
+var joueur2 = {"color": "blue", "nickname": localStorage.getItem('nickname2')};
 var joueurs = [joueur1, joueur2];
 
 // création des emplacements du plateau

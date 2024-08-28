@@ -7,47 +7,67 @@ var inputNameRoom = document.getElementById('room');
 var inputUsername = document.getElementById('username');
 
 inputUsername.value = localStorage.getItem('nickname')
+localStorage.setItem('nickname2','')
 
 function getMode() {
     mode = document.querySelector('#mode').checked;
     return mode ? "expert" : "classique";
 }
 
-joinPublic.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (!inputUsername.value.trim()) {
-        alert("entre un pseudo")
+
+function goGameOrEnterNickname(typeGame){
+    if ( ['',null].includes(localStorage.getItem('nickname')) ){
+        alertify.closeAll()
+        alertify.prompt('Entre ton pseudo', '', function(evt, value) {
+            localStorage.setItem('nickname', value.trim())
+            inputUsername.value = value.trim()
+            goGameOrEnterNickname(typeGame)
+        });
     } else {
         mode = getMode();
-        socket.emit('join public room', mode, (response) => {
+        socket.emit(typeGame, mode, (response) => {
             window.location.pathname = response.nameRoom;
         });
     }
-});
+}
 
-createLocal.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (!inputUsername.value.trim()) {
-        alert("entre un pseudo")
-    } else {
+function goGameLocalOrEnterNickname(){
+    if ( ['',null].includes(localStorage.getItem('nickname')) ){
+        alertify.closeAll()
+        alertify.prompt('Entre ton pseudo', '', function(evt, value) {
+            localStorage.setItem('nickname', value.trim())
+            inputUsername.value = value.trim()
+            goGameLocalOrEnterNickname()
+        });
+    }
+    else if ( ['',null].includes(localStorage.getItem('nickname2')) ){
+        alertify.closeAll()
+        alertify.prompt('Entre le pseudo du deuxième joueur', '', function(evt, value) {
+            localStorage.setItem('nickname2', value.trim())
+            goGameLocalOrEnterNickname()
+        });
+    }
+    else {
         mode = getMode();
-        console.log("je susi la ", mode)
         socket.emit('create local room', mode, (response) => {
             window.location.pathname = response.nameRoom;
         });
     }
+}
+
+joinPublic.addEventListener('click', function (e) {
+    e.preventDefault();
+    goGameOrEnterNickname('join public room')
+});
+
+createLocal.addEventListener('click', function (e) {
+    e.preventDefault();
+    goGameLocalOrEnterNickname()
 });
 
 createPrivate.addEventListener('click', function (e) {
-    e.preventDefault();
-    if (!inputUsername.value.trim()) {
-        alert("entre un pseudo")
-    } else {
-        mode = getMode();
-        socket.emit('create private room', mode, (response) => {
-            window.location.pathname = response.nameRoom;
-        });
-    }
+    e.preventDefault()
+    goGameOrEnterNickname('create private room')
 });
 
 

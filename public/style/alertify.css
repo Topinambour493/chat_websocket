@@ -86,6 +86,7 @@
   border: solid transparent;
   border-radius: 16px;
   border-width: 0 0 4px;
+  display: none;
 }
 .alertify .ajs-body {
   min-height: 56px;
@@ -990,4 +991,7 @@
     -webkit-animation: none!important;
             animation: none!important;
   }
+}
+.alertify.ajs-movable.ajs-pinnable.ajs-pulse{
+  position: absolute;
 }
