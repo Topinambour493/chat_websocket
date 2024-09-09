@@ -9,6 +9,7 @@
     <% if (type === "local") { %>
         <script defer src="js/local_game.js"></script>
     <% } else{ %>
+        <%- include('../partials/nickname'); %>
         <script defer src="js/socket_chat.js"></script>
     <% } %>
 </head>
@@ -25,7 +26,6 @@
     </div>
     <div id="centre_header">
         <div class="centre">
-            <div id="nickname">Bienvenue au QUARTO!</div>
             <div id="action">
                 <div>
                     <a href="/" class="text-decoration-none button-19">retour menu</a>

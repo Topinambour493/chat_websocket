@@ -56,15 +56,8 @@ function endGameLocal(message){
 }
 
 function defineNameJoueursLocal() {
-    let nicknameJ1 = document.querySelector('#nicknameJ1').value;
-    let nicknameJ2 = document.querySelector('#nicknameJ2').value;
-
-    if (nicknameJ1 && nicknameJ1.trim()) {
-        joueur1["nickname"] = nicknameJ1;
-    }
-    if (nicknameJ2 && nicknameJ2.trim()) {
-        joueur2["nickname"] = nicknameJ2;
-    }
+        joueur1["nickname"] = localStorage.getItem("nickname");
+        joueur2["nickname"] = localStorage.getItem("nickname2")
 }
 
 function rejouer() {
@@ -80,6 +73,7 @@ function rejouer() {
 
 function jouer() {
     creation_pieces();
+    defineNameJoueursLocal()
     let first_player = joueurs[Math.floor(Math.random() * 2)];
     fill_header(first_player);
     unlockPieces();

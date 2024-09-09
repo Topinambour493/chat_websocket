@@ -10,7 +10,6 @@ var room = window.location.pathname.substring(1)
 var nextRoom ;
 
 
-socket.emit('deplace room', room, localStorage.getItem('nickname'))
 
 function rejouer(){
     socket.emit("propose revenge", room)
@@ -20,11 +19,6 @@ function returnMenu(){
     socket.emit("not revenge", room)
 }
 
-
-// window.addEventListener("beforeunload", function (event) {
-//     event.preventDefault();
-//     event.returnValue = true;
-// });
 
 function initGame(){
     socket.emit("init game", room, (response) => {
@@ -173,5 +167,23 @@ function animationMulti(room, players){
     }
 }
 
+if (!localStorage.getItem("nickname")){
+    document.querySelector("#form-nickname").parentElement.style.display= "block";
+    document.querySelector("#form-nickname").addEventListener('submit', function (e){
+        e.preventDefault()
+        let nickname = document.querySelector("input[name='nickname']").value
+        if ( !['',null].includes(nickname.trim())) {
+            document.querySelector("#form-nickname").parentElement.style.display = "none";
+            localStorage.setItem("nickname", nickname)
+            socket.emit('deplace room', room, localStorage.getItem('nickname'))
+            initGame();
+        }
+    });
+} else {
+    socket.emit('deplace room', room, localStorage.getItem('nickname'))
+    initGame();
+}
 
-initGame();
+document.querySelector("#form-nickname").addEventListener('input', (event) => {
+    event.target.value = event.target.value.trim();
+});

@@ -5,9 +5,11 @@ var createLocal = document.getElementById('create_local');
 var joinPrivate = document.getElementById('join_private');
 var inputNameRoom = document.getElementById('room');
 var inputUsername = document.getElementById('username');
+var typeGame;
+const validateNicknamesLocal = document.getElementById("form-nicknames")
+const validateNickname = document.getElementById("form-nickname")
 
 inputUsername.value = localStorage.getItem('nickname')
-localStorage.setItem('nickname2','')
 
 function getMode() {
     mode = document.querySelector('#mode').checked;
@@ -15,84 +17,111 @@ function getMode() {
 }
 
 
-function goGameOrEnterNickname(typeGame){
-    if ( ['',null].includes(localStorage.getItem('nickname')) ){
-        alertify.closeAll()
-        alertify.prompt('Entre ton pseudo', '', function(evt, value) {
-            localStorage.setItem('nickname', value.trim())
-            inputUsername.value = value.trim()
-            goGameOrEnterNickname(typeGame)
-        });
+function goGameOrEnterNickname(){
+    let nickname = localStorage.getItem('nickname')
+    localStorage.setItem('nickname',nickname)
+    if ( ['',null].includes(nickname.trim()) ){
+        console.log(nickname,'pk')
+        localStorage.setItem("nickname", nickname)
+        document.querySelector("#form-nickname").parentElement.style.display= "block";
     } else {
+        console.log('ici')
+        inputUsername.value = localStorage.getItem('nickname')
+        localStorage.setItem("nickname", nickname.trim())
         mode = getMode();
-        socket.emit(typeGame, mode, (response) => {
-            window.location.pathname = response.nameRoom;
-        });
+        if (typeGame === "'join room private'" ){
+            let nameRoom = inputNameRoom.value;
+            socket.emit(typeGame, nameRoom, (response) => {
+                if (response.status === 'not found') {
+                    alert("Could not join room. (noSuchRoom)")
+                    console.log("ui");
+                } else {
+                    window.location.pathname = nameRoom;
+                    console.log("non");
+                }
+            });
+        } else {
+            socket.emit(typeGame, mode, (response) => {
+                if (response.status === 'not found') {
+                    alert("Could not join room. (noSuchRoom)")
+                } else {
+                    window.location.pathname = response.nameRoom;
+                }
+            });
+        }
     }
 }
 
 function goGameLocalOrEnterNickname(){
-    if ( ['',null].includes(localStorage.getItem('nickname')) ){
-        alertify.closeAll()
-        alertify.prompt('Entre ton pseudo', '', function(evt, value) {
-            localStorage.setItem('nickname', value.trim())
-            inputUsername.value = value.trim()
-            goGameLocalOrEnterNickname()
-        });
-    }
-    else if ( ['',null].includes(localStorage.getItem('nickname2')) ){
-        alertify.closeAll()
-        alertify.prompt('Entre le pseudo du deuxième joueur', '', function(evt, value) {
-            localStorage.setItem('nickname2', value.trim())
-            goGameLocalOrEnterNickname()
-        });
+    localStorage.setItem('nickname2','')
+    let nickname =  document.querySelector("input[name='nickname1']").value || localStorage.getItem('nickname')
+    let nickname2 = document.querySelector("input[name='nickname2']").value
+    localStorage.setItem('nickname',nickname)
+    localStorage.setItem('nickname2',nickname2)
+    if ( ['',null].includes(nickname.trim()) || ['',null].includes(nickname2.trim())){
+        document.querySelector("input[name='nickname1']").value = localStorage.getItem("nickname")
+        document.querySelector("#form-nicknames").parentElement.style.display= "block";
     }
     else {
+        localStorage.setItem("nickname", nickname.trim())
+        localStorage.setItem("nickname2",  nickname2.trim())
+        document.querySelector("input[name='nickname1']").value = localStorage.getItem("nickname")
+        document.querySelector("input[name='nickname2']").value = localStorage.getItem("nickname2")
+        inputUsername.value = localStorage.getItem('nickname')
         mode = getMode();
         socket.emit('create local room', mode, (response) => {
             window.location.pathname = response.nameRoom;
         });
     }
 }
-
-joinPublic.addEventListener('click', function (e) {
-    e.preventDefault();
-    goGameOrEnterNickname('join public room')
-});
-
 createLocal.addEventListener('click', function (e) {
     e.preventDefault();
     goGameLocalOrEnterNickname()
 });
 
+validateNicknamesLocal.addEventListener('submit', function (e) {
+    e.preventDefault();
+    goGameLocalOrEnterNickname()
+});
+
+validateNickname.addEventListener('submit', function (e){
+    e.preventDefault();
+    goGameOrEnterNickname()
+});
+
 createPrivate.addEventListener('click', function (e) {
     e.preventDefault()
-    goGameOrEnterNickname('create private room')
+    typeGame = 'create private room'
+    goGameOrEnterNickname()
 });
 
 
 joinPrivate.addEventListener('click', function (e) {
     e.preventDefault();
-    if (!inputUsername.value.trim()) {
-        alert("entre un pseudo")
-    } else {
-        console.log('private');
-        nameRoom = inputNameRoom.value;
-        socket.emit('join room private', nameRoom, (response) => {
-            if (response.status === 'not found') {
-                alert("Could not join room. (noSuchRoom)")
-                console.log("ui");
-            } else {
-                window.location.pathname = nameRoom;
-                console.log("non");
-            }
-        });
-    }
+    typeGame = 'join room private'
+    goGameOrEnterNickname()
 });
 
+joinPublic.addEventListener('click', function (e) {
+    e.preventDefault();
+    typeGame = 'join public room'
+    goGameOrEnterNickname()
+});
 
+document.querySelector("input[name='nickname1']").addEventListener('input', (event) => {
+    event.target.value = event.target.value.trim();
+});
 
+document.querySelector("input[name='nickname2']").addEventListener('input', (event) => {
+    event.target.value = event.target.value.trim();
+});
 
+document.querySelector("input[name='nickname']").addEventListener('input', (event) => {
+    event.target.value = event.target.value.trim();
+});
 
+document.getElementById('username').addEventListener('input', (event) => {
+    event.target.value = event.target.value.trim();
+});
 
 

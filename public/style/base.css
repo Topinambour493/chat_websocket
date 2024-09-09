@@ -137,3 +137,40 @@ form {
 }
 
 
+form.nickname {
+    position: relative;
+    z-index: 1;
+    margin: 5% auto;
+    min-height: 110px;
+    max-width: 500px;
+    padding: 24px 24px 0 24px;
+    outline: 0;
+    background-color: #1899D6;
+    font-family: din-round, sans-serif;
+    color: #FFFFFF;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+form.nickname > * {
+    margin-block: 10px;
+}
+
+.background-plan_opacity {
+    display: none;
+    position: absolute;
+    z-index: 7;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    background-color: rgb(250, 252, 175, 0.5);
+}
+
+.submit-nickname{
+    width: fit-content;
+    margin:10px auto;
+}
