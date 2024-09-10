@@ -62,7 +62,7 @@ function disconnect(user_id) {
         } else if (rooms[room]["users"].length === 2){
             if (rooms[room]["users"][1].id === user_id) {
                 rooms[room]["users"].splice(1, 1);
-                io.to(room).emit("end game disconnected")
+                io.to(room).emit("end game  disconnected")
             }
         }
     }

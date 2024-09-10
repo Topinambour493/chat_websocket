@@ -55,3 +55,7 @@
 .button-19:disabled {
     cursor: auto;
 }
+
+.min-width.button-19{
+    width: fit-content;
+}

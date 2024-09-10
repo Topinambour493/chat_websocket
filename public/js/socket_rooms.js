@@ -20,14 +20,14 @@ function getMode() {
 function goGameOrEnterNickname(){
     let nickname = localStorage.getItem('nickname')
     localStorage.setItem('nickname',nickname)
-    if ( ['',null].includes(nickname.trim()) ){
+    if ( ['',null,'null'].includes(nickname) ){
         console.log(nickname,'pk')
         localStorage.setItem("nickname", nickname)
         document.querySelector("#form-nickname").parentElement.style.display= "block";
     } else {
         console.log('ici')
         inputUsername.value = localStorage.getItem('nickname')
-        localStorage.setItem("nickname", nickname.trim())
+        localStorage.setItem("nickname", nickname)
         mode = getMode();
         if (typeGame === "'join room private'" ){
             let nameRoom = inputNameRoom.value;
@@ -58,13 +58,13 @@ function goGameLocalOrEnterNickname(){
     let nickname2 = document.querySelector("input[name='nickname2']").value
     localStorage.setItem('nickname',nickname)
     localStorage.setItem('nickname2',nickname2)
-    if ( ['',null].includes(nickname.trim()) || ['',null].includes(nickname2.trim())){
+    if ( ['',null,'null'].includes(nickname) || ['',null].includes(nickname2)){
         document.querySelector("input[name='nickname1']").value = localStorage.getItem("nickname")
         document.querySelector("#form-nicknames").parentElement.style.display= "block";
     }
     else {
-        localStorage.setItem("nickname", nickname.trim())
-        localStorage.setItem("nickname2",  nickname2.trim())
+        localStorage.setItem("nickname", nickname)
+        localStorage.setItem("nickname2",  nickname2)
         document.querySelector("input[name='nickname1']").value = localStorage.getItem("nickname")
         document.querySelector("input[name='nickname2']").value = localStorage.getItem("nickname2")
         inputUsername.value = localStorage.getItem('nickname')
@@ -125,3 +125,8 @@ document.getElementById('username').addEventListener('input', (event) => {
 });
 
 
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});

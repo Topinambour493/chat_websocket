@@ -18,6 +18,16 @@
     <div id="loader" class="centre">
         <img id="gif_loading" src="gif/loader.png" alt="chargement en cours"/>
         <div id="message">En attente du 2eme joueur</div>
+        <button class="button-19 min-width" onclick="share()">Partage le lien à un ami pour qu'il te rejoigne</button>
+        <script>
+          function share() {
+            const message = window.location;
+            navigator.clipboard.writeText(message).then(() => {
+              alert("Message copié !");
+            });
+          }
+        </script>
+
     </div>
 <% } %>
 <header>

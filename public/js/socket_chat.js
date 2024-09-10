@@ -172,7 +172,7 @@ if (!localStorage.getItem("nickname")){
     document.querySelector("#form-nickname").addEventListener('submit', function (e){
         e.preventDefault()
         let nickname = document.querySelector("input[name='nickname']").value
-        if ( !['',null].includes(nickname.trim())) {
+        if ( !['',null,'null'].includes(nickname.trim())) {
             document.querySelector("#form-nickname").parentElement.style.display = "none";
             localStorage.setItem("nickname", nickname)
             socket.emit('deplace room', room, localStorage.getItem('nickname'))
